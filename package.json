@@ -1,0 +1,30 @@
+{
+  "name": "crud-clubes",
+  "version": "1.0.0",
+  "description": "Backend server to Gran-DT application to r/ArgentinaPrograma course",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rodrigoEsquel/crud-clubes.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rodrigoEsquel/crud-clubes/issues"
+  },
+  "homepage": "https://github.com/rodrigoEsquel/crud-clubes#readme",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-handlebars": "^6.0.6",
+    "nodemon": "^2.0.16"
+  },
+  "devDependencies": {
+    "eslint": "^8.16.0",
+    "jest": "^28.1.0"
+  }
+}
