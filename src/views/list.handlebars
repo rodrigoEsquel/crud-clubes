@@ -1,0 +1,14 @@
+<table style="background-color: black;">
+  <tr style="background-color: darkgray; width: 100px; height: 4em;">
+    <th style="width: ;">Crest</th>
+    <th style="width: 20em;">Name</th>
+    <th style="width: 20em;">Country</th>
+  </tr>
+  {{#each teams}}
+  <tr style="background-color: lightskyblue;">
+    <td><img src={{crestUrl}}></td>
+    <td style="justify-content: center;"><a href="./{{tla}}">{{name}}</a></td>
+    <td>{{country}}</td>
+  </tr>
+  {{/each}}
+</table>
