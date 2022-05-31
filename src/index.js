@@ -3,29 +3,50 @@ import { create } from 'express-handlebars';
 import fs from 'fs';
 
 const app = express();
-const PUERTO = 8080;
 const hbs = create();
+const PUERTO = 8080;
+const DIRECTORIO = './src';
+const DATA_BASE = `${DIRECTORIO}/data/equipos.db.json`;
 
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
-app.set('views', './src/views/');
+app.set('views', `${DIRECTORIO}/views/`);
 
 app.get('/', (req, res) => {
-  res.render('home', {
-    layout: 'main',
-  });
+  try {
+    const teams = JSON.parse(fs.readFileSync(DATA_BASE));
+    const teamsData = teams.map(({ name, tla }) => (
+      {
+        tla,
+        name,
+      }));
+    res.setHeader('Content-Type', 'text/plain');
+    res.end(JSON.stringify(teamsData));
+  } catch (error) {
+    res.status(500).render('500', {
+      layout: 'main',
+    });
+  }
 });
 
-app.get('/team/:id', (req, res) => {
+app.get('/:id', (req, res) => {
   try {
-    const equipos = fs.readFileSync('./src/data/equipos.db.json');
-    res.render('team', {
-      layout: 'main',
-      data: equipos.filter((e) => (e.name?.replace(' ', '_') === req.params.id)),
-    });
+    const teams = JSON.parse(fs.readFileSync(DATA_BASE));
+    const teamSearched = req.params.id.toUpperCase();
+    const teamFetched = teams.filter((team) => (team.tla === teamSearched));
+    if (teamFetched.length === 1) {
+      res.setHeader('Content-Type', 'text/plain');
+      res.end(JSON.stringify(teamFetched));
+    } else {
+      res.status(404).render('404', {
+        layout: 'main',
+        data: req.params.id,
+      });
+    }
   } catch (error) {
-    console.log(error);
-    res.send(`404: "${req.params.id}" not found`);
+    res.status(500).render('500', {
+      layout: 'main',
+    });
   }
 });
 
