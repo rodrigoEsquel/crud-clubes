@@ -1,11 +1,22 @@
 import { Router } from 'express';
 import fs from 'fs';
+import multer from 'multer';
 
 const router = Router();
+const storage = multer.diskStorage({
+  destination(req, file, next) {
+    next(null, './data/escudos');
+  },
+  filename(req, file, next) {
+    next(null, req.body.tla);
+  },
+});
+
+const upload = multer({ storage });
 const DIRECTORIO = './src';
 const DATA_BASE = `${DIRECTORIO}/data/equipos.db.json`;
 
-router.get('/', (req, res) => {
+router.get('/ssr/main', (req, res) => {
   try {
     const teams = JSON.parse(fs.readFileSync(DATA_BASE));
     const teamsData = teams.map(({
@@ -22,20 +33,22 @@ router.get('/', (req, res) => {
       teams: teamsData,
     });
   } catch (error) {
-    res.status(500).render('500', {
+    res.status(500).render('server_error', {
       layout: 'main',
     });
   }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/ssr/main/:id', (req, res) => {
   try {
     const teams = JSON.parse(fs.readFileSync(DATA_BASE));
     const teamSearched = req.params.id.toUpperCase();
     const teamFetched = teams.filter((team) => (team.tla === teamSearched));
     if (teamFetched.length === 1) {
-      res.setHeader('Content-Type', 'text/plain');
-      res.end(JSON.stringify(teamFetched));
+      res.render('team', {
+        layout: 'main',
+        team: teamFetched[0],
+      });
     } else {
       res.status(404).render('404', {
         layout: 'main',
@@ -43,7 +56,32 @@ router.get('/:id', (req, res) => {
       });
     }
   } catch (error) {
-    res.status(500).render('500', {
+    res.status(500).render('server_error', {
+      layout: 'main',
+    });
+  }
+});
+
+router.get('/ssr/new', (req, res) => {
+  try {
+    res.render('add_team', {
+      layout: 'main',
+    });
+  } catch (error) {
+    res.status(500).render('server_error', {
+      layout: 'main',
+    });
+  }
+});
+
+router.post('/ssr/new', upload.single('imagen'), (req, res) => {
+  try {
+    res.render('exito', {
+      layout: 'main',
+      mensaje: 'Éxito!',
+    });
+  } catch (error) {
+    res.status(500).render('server_error', {
       layout: 'main',
     });
   }

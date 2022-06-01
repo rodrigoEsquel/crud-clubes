@@ -5,7 +5,7 @@ const router = Router();
 const DIRECTORIO = './src';
 const DATA_BASE = `${DIRECTORIO}/data/equipos.db.json`;
 
-router.get('/', (req, res) => {
+router.get('/api/', (req, res) => {
   try {
     const teams = JSON.parse(fs.readFileSync(DATA_BASE));
     const teamsData = teams.map(({ name, tla }) => (
@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
   }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/api/:id', (req, res) => {
   try {
     const teams = JSON.parse(fs.readFileSync(DATA_BASE));
     const teamSearched = req.params.id.toUpperCase();

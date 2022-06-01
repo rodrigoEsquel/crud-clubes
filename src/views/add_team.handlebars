@@ -1,0 +1,15 @@
+<form action="/stats" enctype="multipart/form-data"
+  method="post" "display: flex; justify-content: center; width: 99vw; text-align: center; font-size: x-large;">
+  <div class="form-group" style="margin-top: 2em; width: 200px; border: 10px; border-color: black;">
+    <input type="file" class="form-control-file" name="uploaded_file">
+    <input type="text" class="form-control" placeholder={{team.name}} name="name">
+    <input type="text" class="form-control" placeholder={{team.tla}} name="tla">
+    <input type="text" class="form-control" placeholder={{team.area.name}} name="area_name">
+    <input type="text" class="form-control" placeholder={{team.website}} name="website">
+    <input type="text" class="form-control" placeholder={{team.email}} name="email">
+    <input type="submit" value="Send" class="btn btn-default">
+    <a href="./">
+      <div style="background-color: blue; color: aliceblue;">Back to List</div>
+    </a>
+  </div>
+</form>
