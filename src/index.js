@@ -1,5 +1,6 @@
 import express from 'express';
 import { create } from 'express-handlebars';
+import morgan from 'morgan';
 // eslint-disable-next-line import/extensions
 import ssrRoutes from './routes/ssr.routes.js';
 
@@ -12,6 +13,7 @@ app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.set('views', `${DIRECTORIO}/views/`);
 
+app.use(morgan('dev'));
 app.use(ssrRoutes);
 
 app.listen(PUERTO);
