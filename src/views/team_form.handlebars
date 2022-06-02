@@ -1,0 +1,19 @@
+<div style="display: flex; justify-content: center; width: 99vw; text-align: center; font-size: x-large;">
+  <form action="" enctype="multipart/form-data" method="post"
+    style="margin-top: 2em; width: 300px; border-width: 1px; border-color: black; background: darkgrey;">
+    <div class="form-group">
+      <input type="file" class="form-control-file" name="uploaded_file" style="height: 200px;">
+      <input type="text" class="form-control" placeholder='Team Name' value='{{team.name}}' name="name">
+      <input type="text" class="form-control" placeholder='AAA' value='{{team.tla}}' name="tla">
+      <input type="text" class="form-control" placeholder='England' value='{{team.area.name}}' name="area_name">
+      <input type="text" class="form-control" placeholder='www.equipoweb.com' value='{{team.website}}' name="website">
+      <input type="text" class="form-control" placeholder='ejemplo@host.com' value='{{team.email}}' name="email">
+      <div style="display: flex; justify-content: space-between;"><a href="/ssr/main/">
+          <input type="submit" value="Send" class="btn btn-default">
+          <a href="javascript:history.back()">
+            <button type="button" style="background-color: red; color: aliceblue;">Cancel</button>
+          </a>
+      </div>
+    </div>
+  </form>
+</div>
