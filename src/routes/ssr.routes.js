@@ -62,10 +62,54 @@ router.get('/ssr/main/:id', (req, res) => {
   }
 });
 
+router.get('/ssr/main/:id/edit', (req, res) => {
+  try {
+    const teams = JSON.parse(fs.readFileSync(DATA_BASE));
+    const teamSearched = req.params.id.toUpperCase();
+    const teamFetched = teams.filter((team) => (team.tla === teamSearched));
+    if (teamFetched.length === 1) {
+      res.render('team_form', {
+        layout: 'main',
+        team: teamFetched[0],
+      });
+    } else {
+      res.status(404).render('404', {
+        layout: 'main',
+        param: req.params.id,
+      });
+    }
+  } catch (error) {
+    res.status(500).render('server_error', {
+      layout: 'main',
+    });
+  }
+});
+
 router.get('/ssr/new', (req, res) => {
   try {
-    res.render('add_team', {
+    res.render('team_form', {
       layout: 'main',
+      team: {
+        name: '',
+        tla: '',
+        area: { name: '' },
+        website: '',
+        email: '',
+      },
+    });
+  } catch (error) {
+    res.status(500).render('server_error', {
+      layout: 'main',
+    });
+  }
+});
+
+router.post('/ssr/main/:id/edit', upload.single('imagen'), (req, res) => {
+  try {
+    console.log(req.body);
+    res.render('exito', {
+      layout: 'main',
+      mensaje: 'Éxito!',
     });
   } catch (error) {
     res.status(500).render('server_error', {
@@ -76,6 +120,7 @@ router.get('/ssr/new', (req, res) => {
 
 router.post('/ssr/new', upload.single('imagen'), (req, res) => {
   try {
+    console.log(req.body);
     res.render('exito', {
       layout: 'main',
       mensaje: 'Éxito!',
