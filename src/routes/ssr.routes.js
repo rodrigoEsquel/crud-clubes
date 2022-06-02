@@ -105,7 +105,6 @@ router.get('/ssr/new', (req, res) => {
 
 router.post('/ssr/main/:id/edit', upload.single('uploaded_file'), (req, res) => {
   try {
-    console.log(req.body);
     res.render('resultado_form', {
       layout: 'main',
       mensaje: 'Éxito!',
