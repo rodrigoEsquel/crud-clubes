@@ -1,14 +1,30 @@
-<table style="background-color: black;">
-  <tr style="background-color: darkgray; width: 100px; height: 4em;">
-    <th style="width: ;">Crest</th>
-    <th style="width: 20em;">Name</th>
-    <th style="width: 20em;">Country</th>
-  </tr>
-  {{#each teams}}
-  <tr style="background-color: lightskyblue;">
-    <td><img src={{crestUrl}}></td>
-    <td style="justify-content: center;"><a href="/ssr/main/{{tla}}">{{name}}</a></td>
-    <td>{{country}}</td>
-  </tr>
-  {{/each}}
-</table>
+<div style="display: flex; justify-content: center; width: 98vw; text-align: center; font-size: x-large;">
+  <table style=" background-color: black;">
+    <tr style="background-color: darkgray; width: 100px; height: 4em;">
+      <th style="width: ;">Crest</th>
+      <th style="">Name</th>
+      <th style="">Actions</th>
+    </tr>
+    {{#each teams}}
+    <tr>
+      <td style=" background-color: lightskyblue;"><img style="height: 70px; margin: 5px;" src={{crestUrl}}></td>
+      <td style="background-color: lightgrey; text-align: center;">{{name}}</td>
+      <td style="background-color: lightskyblue;">
+        <a href="/ssr/main/{{tla}}">
+          <button type="button" style="background-color: blue; color: aliceblue;">Open</button>
+        </a>
+        <a href="/ssr/main/{{tla}}/edit">
+          <button type="button" style="background-color: green; color: aliceblue;">Edit</button>
+        </a>
+        <a href="/ssr/main/{{tla}}/delete">
+          <button type="button" style="background-color: red; color: aliceblue;">Delete</button>
+        </a>
+      </td>
+    </tr>
+    {{/each}}
+  </table>
+</div>
+<a href="/ssr/new">
+  <button type="button"
+    style="position: fixed; bottom: 20px; right: 20px; font-size: x-large; background-color: orange; color: aliceblue; border-width: 1px; border-color: black;">New</button>
+</a>

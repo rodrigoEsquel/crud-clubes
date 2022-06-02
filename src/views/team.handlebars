@@ -1,13 +1,19 @@
 <div style="display: flex; justify-content: center; width: 99vw; text-align: center; font-size: x-large;">
-  <div style="margin-top: 2em; width: 200px; border: 10px; border-color: black;">
-    <img src={{team.crestUrl}}>
+  <div style="margin-top: 2em; width: 300px; border-width: 1px; border-color: black; background: darkgrey;">
+    <div style="display: flex; justify-content: center; margin: 5px;">
+      <img style="height: 200px;" src={{team.crestUrl}}>
+    </div>
     <div>{{team.name}}</div>
     <div>{{team.tla}}</div>
     <div>{{team.area.name}}</div>
     <div>{{team.website}}</div>
     <div>{{team.email}}</div>
-    <a href="/ssr/main/">
-      <button type="button" style="background-color: blue; color: aliceblue;">Back to List</button>
-    </a>
+    <div style="display: flex; justify-content: space-between;"><a href="/ssr/main/">
+        <button type="button" style="background-color: blue; color: aliceblue;">List</button>
+      </a>
+      <a href="/ssr/main/{{team.tla}}/edit">
+        <button type="button" style="background-color: green; color: aliceblue;">Edit</button>
+      </a>
+    </div>
   </div>
 </div>
