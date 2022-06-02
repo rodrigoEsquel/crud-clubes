@@ -8,13 +8,12 @@ const storage = multer.diskStorage({
     next(null, './data/escudos');
   },
   filename(req, file, next) {
-    next(null, req.body.tla);
+    next(null, file.fieldname + req.body.tla);
   },
 });
 
 const upload = multer({ storage });
-const DIRECTORIO = './src';
-const DATA_BASE = `${DIRECTORIO}/data/equipos.db.json`;
+const DATA_BASE = './data/equipos.db.json';
 
 router.get('/ssr/main', (req, res) => {
   try {
@@ -104,10 +103,10 @@ router.get('/ssr/new', (req, res) => {
   }
 });
 
-router.post('/ssr/main/:id/edit', upload.single('imagen'), (req, res) => {
+router.post('/ssr/main/:id/edit', upload.single('uploaded_file'), (req, res) => {
   try {
     console.log(req.body);
-    res.render('exito', {
+    res.render('resultado_form', {
       layout: 'main',
       mensaje: 'Éxito!',
     });
@@ -118,13 +117,25 @@ router.post('/ssr/main/:id/edit', upload.single('imagen'), (req, res) => {
   }
 });
 
-router.post('/ssr/new', upload.single('imagen'), (req, res) => {
+router.post('/ssr/new', upload.single('uploaded_file'), (req, res) => {
   try {
-    console.log(req.body);
-    res.render('exito', {
-      layout: 'main',
-      mensaje: 'Éxito!',
-    });
+    if (
+      req.body.name
+      && req.body.tla
+      && req.body.area_name
+      && req.body.website
+      && req.body.email
+    ) {
+      res.render('resultado_form', {
+        layout: 'main',
+        mensaje: 'Éxito!',
+      });
+    } else {
+      res.render('resultado_form', {
+        layout: 'main',
+        mensaje: 'Faltan datos!',
+      });
+    }
   } catch (error) {
     res.status(500).render('server_error', {
       layout: 'main',

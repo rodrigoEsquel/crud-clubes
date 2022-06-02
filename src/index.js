@@ -7,11 +7,10 @@ import ssrRoutes from './routes/ssr.routes.js';
 const app = express();
 const hbs = create();
 const PUERTO = 8080;
-const DIRECTORIO = './src';
 
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
-app.set('views', `${DIRECTORIO}/views/`);
+app.set('views', './views/');
 
 app.use(morgan('dev'));
 app.use(ssrRoutes);
