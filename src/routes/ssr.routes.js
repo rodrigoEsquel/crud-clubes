@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import fs from 'fs';
 import multer from 'multer';
+import validateForm from '../validateForm.js';
 
 const router = Router();
 const storage = multer.diskStorage({
@@ -105,6 +106,7 @@ router.get('/ssr/new', (req, res) => {
 
 router.post('/ssr/main/:id/edit', upload.single('uploaded_file'), (req, res) => {
   try {
+    console.log('validation:', validateForm({ ...req.body, task: 'edit' }));
     res.render('resultado_form', {
       layout: 'main',
       mensaje: 'Éxito!',
