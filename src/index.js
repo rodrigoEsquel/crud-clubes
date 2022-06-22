@@ -17,3 +17,4 @@ app.use(ssrRoutes);
 
 app.listen(PUERTO);
 console.log(`Escuchando en http://localhost:${PUERTO}`);
+console.log(`Server Side Render Site: http://localhost:${PUERTO}/ssr/main`);
