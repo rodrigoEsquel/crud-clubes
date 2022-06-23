@@ -4,7 +4,8 @@ import {
 } from './validate-data.js';
 
 export default function validateForm({
-  name, email, website, areaName, tla, task, // TODO generar unique ID para verificar si ante una edicion estoy trabajando sobre el mismo o sobre uno nuevo
+  name, email, website, areaName, tla,
+  // TODO unique ID para verificar edicion o nuevo equipo
 }) {
   const pass = !!((
     validarName(name).pass
@@ -16,8 +17,8 @@ export default function validateForm({
   const response = {
     name: validarName(name).res,
     email: validarEmail(email).res,
-    webpage: validarWebsite(website).res,
-    area_name: validarAreaName(areaName).res,
+    website: validarWebsite(website).res,
+    areaName: validarAreaName(areaName).res,
     tla: validarTla(tla).res,
   };
   return {

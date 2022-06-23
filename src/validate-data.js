@@ -1,7 +1,4 @@
-import fs from 'fs';
-
-const DATA_BASE = './data/equipos.db.json';
-const teams = JSON.parse(fs.readFileSync(DATA_BASE));
+import database from './database.js';
 
 export function validarName(name) {
   const regexFC = / FC$/;
@@ -63,9 +60,9 @@ export function validarAreaName(areaName) {
 }
 
 export function validarTla(tla) {
-  const idList = teams.map((elem) => elem.tla);
+  const tlaList = database.teams.map((elem) => elem.tla);
   const regex = /[A-Z]{3}/;
-  if (idList.includes(tla)) {
+  if (tlaList.includes(tla)) {
     return {
       res: 'TLA must be unique',
       pass: false,
