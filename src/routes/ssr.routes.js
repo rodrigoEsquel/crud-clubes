@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import { Router } from 'express';
 import fs from 'fs';
 import multer from 'multer';
@@ -79,6 +80,7 @@ router.get('/ssr/main/:id/edit', (req, res) => {
       });
     }
   } catch (error) {
+    console.error(error);
     res.status(500).render('server_error', {
       layout: 'main',
     });
@@ -106,7 +108,6 @@ router.get('/ssr/new', (req, res) => {
 
 router.post('/ssr/main/:id/edit', upload.single('uploaded_file'), (req, res) => {
   try {
-    console.log('validation:', validateForm({ ...req.body, task: 'edit' }));
     res.render('resultado_form', {
       layout: 'main',
       mensaje: 'Éxito!',
@@ -120,24 +121,33 @@ router.post('/ssr/main/:id/edit', upload.single('uploaded_file'), (req, res) => 
 
 router.post('/ssr/new', upload.single('uploaded_file'), (req, res) => {
   try {
-    if (
-      req.body.name
-      && req.body.tla
-      && req.body.area_name
-      && req.body.website
-      && req.body.email
-    ) {
+    const { pass, response } = validateForm({ ...req.body, task: 'edit' });
+    if (pass) {
       res.render('resultado_form', {
         layout: 'main',
         mensaje: 'Éxito!',
       });
     } else {
-      res.render('resultado_form', {
+      const {
+        name,
+        email,
+        website,
+        areaName,
+        tla,
+      } = response;
+      res.render('team_form', {
         layout: 'main',
-        mensaje: 'Faltan datos!',
+        team: {
+          name,
+          tla,
+          area: { name: areaName },
+          website,
+          email,
+        },
       });
     }
   } catch (error) {
+    console.error(error);
     res.status(500).render('server_error', {
       layout: 'main',
     });
