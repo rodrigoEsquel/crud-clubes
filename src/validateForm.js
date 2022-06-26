@@ -1,7 +1,7 @@
 import {
   validarName, validarEmail, validarWebsite, validarAreaName, validarTla,
 // eslint-disable-next-line import/extensions
-} from './validate-data.js';
+} from './validateData.js';
 
 export default function validateForm({
   name, email, website, areaName, tla,
