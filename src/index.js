@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import express from 'express';
 import { create } from 'express-handlebars';
 import morgan from 'morgan';
