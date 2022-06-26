@@ -1,0 +1,25 @@
+<div style="display: flex; flex-direction: column; align-items: center; width: 99vw; text-align: center; font-size: x-large;">
+  <h1>Are you sure you want to delete this team?</h1>
+  <div style="margin-top: 2em; width: 300px; border-width: 1px; border-color: black; background: darkgrey;">
+    <div style="display: flex; justify-content: center; margin: 5px;">
+      <img style="height: 200px;" src={{team.crestUrl}}>
+    </div>
+    <div name="name">{{team.name}}</div>
+    <div name="tla">{{team.tla}}</div>
+    <div>{{team.area.name}}</div>
+    <div>{{team.website}}</div>
+    <div>{{team.email}}</div>
+    <div style="display: flex; justify-content: space-between;">
+      <a href="/ssr/main/">
+        <button type="button" style="background-color: blue; color: aliceblue;">Back</button>
+      </a>
+      <button type="button" value="Delete"  onclick="fetchDelete()" class="btn btn-default" style="background-color: red; color: aliceblue;">Delete</button>
+    </div>
+  </div>
+  <script>
+    function fetchDelete() {
+      console.log("{{team.tla}}")
+      fetch(`/ssr/main/{{team.tla}}/delete`, {method: 'DELETE'})
+    }
+</script>
+</div>
