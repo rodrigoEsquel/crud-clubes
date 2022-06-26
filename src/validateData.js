@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/extensions
 import database from './database.js';
 
 export function validarName(name) {
