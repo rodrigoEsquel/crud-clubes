@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/extensions
-import database from './database.js';
+import { teams } from './database.js';
 
 export function validarName(name) {
   const regexFC = / FC$/;
@@ -60,18 +60,18 @@ export function validarAreaName(areaName) {
   };
 }
 
-export function validarTla(tla) {
-  const tlaList = database.teams.map((elem) => elem.tla);
-  const regex = /[A-Z]{3}/;
-  if (tlaList.includes(tla)) {
-    return {
-      res: 'TLA must be unique',
-      pass: false,
-    };
-  }
+export function validarTla(tla, originalTla) {
+  const tlaList = teams.map((elem) => elem.tla);
+  const regex = /^[A-Z]{3}$/;
   if (!regex.test(tla)) {
     return {
       res: 'TLA should be 3 capital letters',
+      pass: false,
+    };
+  }
+  if (tlaList.includes(tla) && (tla !== originalTla)) {
+    return {
+      res: 'TLA must be unique',
       pass: false,
     };
   }
