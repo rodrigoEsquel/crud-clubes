@@ -1,11 +1,20 @@
 import fs from 'fs';
+import multer from 'multer';
 
 const DATA_BASE = './data/equipos.db.json';
-const teams = JSON.parse(fs.readFileSync(DATA_BASE));
+export const teams = JSON.parse(fs.readFileSync(DATA_BASE));
 
-function createTeam() {}
+const storage = multer.diskStorage({
+  destination(req, file, next) {
+    next(null, './data/escudos');
+  },
+  filename(req, file, next) {
+    next(null, file.fieldname + req.body.tla);
+  },
+});
 
-function editTeam() {}
+const upload = multer({ storage });
+export function saveImage(image) { console.log('guardando imagen'); return upload.single(image); }
 
 function getUniqueId() {
   const maxId = 99999;
@@ -17,11 +26,64 @@ function getUniqueId() {
   return id;
 }
 
-const database = {
-  teams,
-  createTeam,
-  editTeam,
-  getUniqueId,
-};
+export function createTeam({
+  name, email, website, areaName, tla,
+}) {
+  const newTeam = {
+    id: getUniqueId,
+    area: {
+      name: areaName,
+    },
+    name,
+    tla,
+    crestUrl: `/data/escudos${tla}`,
+    website,
+    email,
+  };
+  try {
+    fs.writeFileSync(DATA_BASE, JSON.stringify(teams.push(newTeam)));
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-export default database;
+export function editTeam({
+  name, email, website, areaName, tla, originalTla,
+}) {
+  const index = teams.findIndex((team) => (team.tla === originalTla.toUpperCase()));
+  const newTeams = [...teams];
+  newTeams[index] = {
+    ...newTeams[index],
+    area: {
+      name: areaName,
+    },
+    name,
+    tla,
+    crestUrl: `/data/escudos${tla}`,
+    website,
+    email,
+  };
+  try {
+    fs.writeFileSync(DATA_BASE, JSON.stringify(newTeams));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function deleteTeam(tla) {
+  const newTeams = teams.filter((team) => (team.tla !== tla));
+  try {
+    fs.writeFileSync(DATA_BASE, JSON.stringify(newTeams));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function getTeamByTla(tla) {
+  const searchedTla = tla.toUpperCase();
+  const fetchedTeam = teams.filter((team) => (team.tla === searchedTla));
+  if (fetchedTeam.length === 1) {
+    return fetchedTeam.pop();
+  }
+  return false;
+}

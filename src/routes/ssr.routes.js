@@ -1,10 +1,11 @@
 /* eslint-disable import/extensions */
 import { Router } from 'express';
-import fs from 'fs';
 import multer from 'multer';
 import validateForm from '../validateForm.js';
+import {
+  teams, getTeamByTla, createTeam, editTeam, deleteTeam,
+} from '../database.js';
 
-const router = Router();
 const storage = multer.diskStorage({
   destination(req, file, next) {
     next(null, './data/escudos');
@@ -15,23 +16,13 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-const DATA_BASE = './data/equipos.db.json';
+const router = Router();
 
 router.get('/ssr/main', (req, res) => {
   try {
-    const teams = JSON.parse(fs.readFileSync(DATA_BASE));
-    const teamsData = teams.map(({
-      name, tla, crestUrl, area,
-    }) => (
-      {
-        tla,
-        name,
-        crestUrl,
-        country: area.name,
-      }));
     res.render('list', {
       layout: 'main',
-      teams: teamsData,
+      teams,
     });
   } catch (error) {
     res.status(500).render('server_error', {
@@ -42,13 +33,11 @@ router.get('/ssr/main', (req, res) => {
 
 router.get('/ssr/main/:id', (req, res) => {
   try {
-    const teams = JSON.parse(fs.readFileSync(DATA_BASE));
-    const teamSearched = req.params.id.toUpperCase();
-    const teamFetched = teams.filter((team) => (team.tla === teamSearched));
-    if (teamFetched.length === 1) {
+    const fetchedTeam = getTeamByTla(req.params.id);
+    if (fetchedTeam) {
       res.render('team', {
         layout: 'main',
-        team: teamFetched[0],
+        team: fetchedTeam,
       });
     } else {
       res.status(404).render('404', {
@@ -65,13 +54,11 @@ router.get('/ssr/main/:id', (req, res) => {
 
 router.get('/ssr/main/:id/edit', (req, res) => {
   try {
-    const teams = JSON.parse(fs.readFileSync(DATA_BASE));
-    const teamSearched = req.params.id.toUpperCase();
-    const teamFetched = teams.filter((team) => (team.tla === teamSearched));
-    if (teamFetched.length === 1) {
+    const fetchedTeam = getTeamByTla(req.params.id);
+    if (fetchedTeam) {
       res.render('team_form', {
         layout: 'main',
-        team: teamFetched[0],
+        team: fetchedTeam,
       });
     } else {
       res.status(404).render('404', {
@@ -89,15 +76,17 @@ router.get('/ssr/main/:id/edit', (req, res) => {
 
 router.get('/ssr/new', (req, res) => {
   try {
+    deleteTeam('LIV');
+    const emptyTeam = {
+      name: '',
+      tla: '',
+      area: { name: '' },
+      website: '',
+      email: '',
+    };
     res.render('team_form', {
       layout: 'main',
-      team: {
-        name: '',
-        tla: '',
-        area: { name: '' },
-        website: '',
-        email: '',
-      },
+      team: emptyTeam,
     });
   } catch (error) {
     res.status(500).render('server_error', {
@@ -106,44 +95,43 @@ router.get('/ssr/new', (req, res) => {
   }
 });
 
-router.post('/ssr/main/:id/edit', upload.single('uploaded_file'), (req, res) => {
+router.post('/ssr/main/:id/edit', (req, res) => {
+  const { pass, response } = validateForm({ ...req.body, originalTla: req.params.id });
   try {
-    res.render('resultado_form', {
-      layout: 'main',
-      mensaje: 'Éxito!',
-    });
-  } catch (error) {
-    res.status(500).render('server_error', {
-      layout: 'main',
-    });
-  }
-});
-
-router.post('/ssr/new', upload.single('uploaded_file'), (req, res) => {
-  try {
-    const { pass, response } = validateForm({ ...req.body, task: 'edit' });
     if (pass) {
+      editTeam({ ...response, originalTla: req.params.id });
       res.render('resultado_form', {
         layout: 'main',
         mensaje: 'Éxito!',
       });
     } else {
-      const {
-        name,
-        email,
-        website,
-        areaName,
-        tla,
-      } = response;
+      const errorTeam = { ...response, area: { name: response.areaName } };
       res.render('team_form', {
         layout: 'main',
-        team: {
-          name,
-          tla,
-          area: { name: areaName },
-          website,
-          email,
-        },
+        team: errorTeam,
+      });
+    }
+  } catch (error) {
+    res.status(500).render('server_error', {
+      layout: 'main',
+    });
+  }
+});
+
+router.post('/ssr/new', (req, res) => {
+  try {
+    const { pass, response } = validateForm({ ...req.body, task: 'edit' });
+    if (pass) {
+      createTeam(response);
+      res.render('resultado_form', {
+        layout: 'main',
+        mensaje: 'Éxito!',
+      });
+    } else {
+      const errorTeam = { ...response, area: { name: response.areaName } };
+      res.render('team_form', {
+        layout: 'main',
+        team: errorTeam,
       });
     }
   } catch (error) {
@@ -152,6 +140,6 @@ router.post('/ssr/new', upload.single('uploaded_file'), (req, res) => {
       layout: 'main',
     });
   }
-});
+}, upload.single('uploaded_file'));
 
 export default router;
