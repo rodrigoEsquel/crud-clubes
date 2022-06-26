@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-export function saveImage(image) { console.log('guardando imagen'); return upload.single(image); }
+export function saveImage(image) { return upload.single(image); }
 
 function getUniqueId() {
   const maxId = 99999;
@@ -40,11 +40,7 @@ export function createTeam({
     website,
     email,
   };
-  try {
-    fs.writeFileSync(DATA_BASE, JSON.stringify(teams.push(newTeam)));
-  } catch (error) {
-    console.log(error);
-  }
+  fs.writeFileSync(DATA_BASE, JSON.stringify(teams.push(newTeam)));
 }
 
 export function editTeam({
@@ -63,20 +59,12 @@ export function editTeam({
     website,
     email,
   };
-  try {
-    fs.writeFileSync(DATA_BASE, JSON.stringify(newTeams));
-  } catch (error) {
-    console.log(error);
-  }
+  fs.writeFileSync(DATA_BASE, JSON.stringify(newTeams));
 }
 
 export function deleteTeam(tla) {
   const newTeams = teams.filter((team) => (team.tla !== tla));
-  try {
-    fs.writeFileSync(DATA_BASE, JSON.stringify(newTeams));
-  } catch (error) {
-    console.log(error);
-  }
+  fs.writeFileSync(DATA_BASE, JSON.stringify(newTeams));
 }
 
 export function getTeamByTla(tla) {
