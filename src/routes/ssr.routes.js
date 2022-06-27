@@ -24,7 +24,7 @@ router.get('/ssr/main/:id', (req, res) => {
   try {
     const fetchedTeam = getTeamByTla(req.params.id);
     if (fetchedTeam) {
-      res.render('team', {
+      res.render('team_show', {
         layout: 'main',
         team: fetchedTeam,
       });
@@ -45,7 +45,7 @@ router.get('/ssr/main/:id/edit', (req, res) => {
   try {
     const fetchedTeam = getTeamByTla(req.params.id);
     if (fetchedTeam) {
-      res.render('team_form', {
+      res.render('team_edit', {
         layout: 'main',
         team: fetchedTeam,
       });
@@ -119,7 +119,7 @@ router.post('/ssr/main/:id/edit', (req, res) => {
       });
     } else {
       const errorTeam = { ...response, area: { name: response.areaName } };
-      res.render('team_form', {
+      res.render('team_edit', {
         layout: 'main',
         team: errorTeam,
       });
