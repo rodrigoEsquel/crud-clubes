@@ -1,21 +1,10 @@
 /* eslint-disable import/extensions */
 import { Router } from 'express';
-import multer from 'multer';
 import validateForm from '../validateForm.js';
 import {
-  teams, getTeamByTla, createTeam, editTeam, deleteTeam,
+  teams, getTeamByTla, createTeam, editTeam, deleteTeam, saveImage,
 } from '../database.js';
 
-const storage = multer.diskStorage({
-  destination(req, file, next) {
-    next(null, './data/escudos');
-  },
-  filename(req, file, next) {
-    next(null, file.fieldname + req.body.tla);
-  },
-});
-
-const upload = multer({ storage });
 const router = Router();
 
 router.get('/ssr/main', (req, res) => {
@@ -74,9 +63,30 @@ router.get('/ssr/main/:id/edit', (req, res) => {
   }
 });
 
+router.get('/ssr/main/:id/delete', (req, res) => {
+  try {
+    const fetchedTeam = getTeamByTla(req.params.id);
+    if (fetchedTeam) {
+      res.render('team_delete', {
+        layout: 'main',
+        team: fetchedTeam,
+      });
+    } else {
+      res.status(404).render('404', {
+        layout: 'main',
+        param: req.params.id,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('server_error', {
+      layout: 'main',
+    });
+  }
+});
+
 router.get('/ssr/new', (req, res) => {
   try {
-    deleteTeam('LIV');
     const emptyTeam = {
       name: '',
       tla: '',
@@ -84,7 +94,7 @@ router.get('/ssr/new', (req, res) => {
       website: '',
       email: '',
     };
-    res.render('team_form', {
+    res.render('team_edit', {
       layout: 'main',
       team: emptyTeam,
     });
@@ -96,7 +106,10 @@ router.get('/ssr/new', (req, res) => {
 });
 
 router.post('/ssr/main/:id/edit', (req, res) => {
-  const { pass, response } = validateForm({ ...req.body, originalTla: req.params.id });
+  const { pass, response } = validateForm({ ...req.body });
+  console.log('req.body', req);
+  console.log('pass', res);
+  console.log('response', response);
   try {
     if (pass) {
       editTeam({ ...response, originalTla: req.params.id });
@@ -118,28 +131,60 @@ router.post('/ssr/main/:id/edit', (req, res) => {
   }
 });
 
-router.post('/ssr/new', (req, res) => {
-  try {
-    const { pass, response } = validateForm({ ...req.body, task: 'edit' });
-    if (pass) {
-      createTeam(response);
+router.post(
+  '/ssr/new',
+  (req, res, next) => {
+    console.log('req.body', req.body);
+    try {
+      const { pass, response } = validateForm({ ...req.body, task: 'edit' });
+      if (pass) {
+        createTeam(response);
+        next();
+      } else {
+        const errorTeam = { ...response, area: { name: response.areaName } };
+        res.render('team_edit', {
+          layout: 'main',
+          team: errorTeam,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).render('server_error', {
+        layout: 'main',
+      });
+    }
+  },
+
+  saveImage('uploaded_file'),
+
+  (req, res) => {
+    try {
       res.render('resultado_form', {
         layout: 'main',
         mensaje: 'Éxito!',
       });
-    } else {
-      const errorTeam = { ...response, area: { name: response.areaName } };
-      res.render('team_form', {
+    } catch (error) {
+      console.error(error);
+      res.status(500).render('server_error', {
         layout: 'main',
-        team: errorTeam,
       });
     }
+  },
+);
+
+router.delete('/ssr/main/:id/delete', (req, res) => {
+  try {
+    deleteTeam(req.params.id);
+    res.render('resultado_form', {
+      layout: 'main',
+      mensaje: 'Éxito!',
+    });
   } catch (error) {
     console.error(error);
     res.status(500).render('server_error', {
       layout: 'main',
     });
   }
-}, upload.single('uploaded_file'));
+});
 
 export default router;
