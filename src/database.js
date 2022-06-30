@@ -14,7 +14,9 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
+
 export function saveImage(image) { return upload.single(image); }
+export const loadForm = upload.none();
 
 function getUniqueId() {
   const maxId = 99999;
