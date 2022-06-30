@@ -2,12 +2,12 @@
 import { Router } from 'express';
 import validateForm from '../validateForm.js';
 import {
-  teams, getTeamByTla, createTeam, editTeam, deleteTeam, saveImage,
+  teams, getTeamByTla, createTeam, editTeam, deleteTeam, saveImage, loadForm,
 } from '../database.js';
 
 const router = Router();
 
-router.get('/ssr/main', (req, res) => {
+const renderList = (req, res) => {
   try {
     res.render('list', {
       layout: 'main',
@@ -18,98 +18,84 @@ router.get('/ssr/main', (req, res) => {
       layout: 'main',
     });
   }
-});
+};
 
-router.get('/ssr/main/:id', (req, res) => {
+const handleForm = (req, res, next) => {
+  const { pass } = validateForm({ ...req.body });
   try {
-    const fetchedTeam = getTeamByTla(req.params.id);
-    if (fetchedTeam) {
-      res.render('team_show', {
-        layout: 'main',
-        team: fetchedTeam,
-      });
+    if (pass) {
+      try {
+        res.render('resultado_form', {
+          layout: 'main',
+          mensaje: 'Éxito!',
+        });
+      } catch (error) {
+        res.status(500).render('server_error', {
+          layout: 'main',
+        });
+      }
     } else {
-      res.status(404).render('404', {
-        layout: 'main',
-        param: req.params.id,
-      });
+      try {
+        res.render('resultado_form', {
+          layout: 'main',
+          mensaje: 'Éxito!',
+        });
+      } catch (error) {
+        res.status(500).render('server_error', {
+          layout: 'main',
+        });
+      }
     }
   } catch (error) {
     res.status(500).render('server_error', {
       layout: 'main',
     });
   }
-});
+};
 
-router.get('/ssr/main/:id/edit', (req, res) => {
-  try {
-    const fetchedTeam = getTeamByTla(req.params.id);
-    if (fetchedTeam) {
-      res.render('team_edit', {
+function renderTeamInView(view, team = 'default') {
+  return ((req, res) => {
+    try {
+      const fetchedTeam = (team === 'default'
+        ? getTeamByTla(req.params.id)
+        : team);
+      if (fetchedTeam) {
+        res.render(view, {
+          layout: 'main',
+          team: fetchedTeam,
+        });
+      } else {
+        res.status(404).render('404', {
+          layout: 'main',
+          param: req.params.id,
+        });
+      }
+    } catch (error) {
+      res.status(500).render('server_error', {
         layout: 'main',
-        team: fetchedTeam,
-      });
-    } else {
-      res.status(404).render('404', {
-        layout: 'main',
-        param: req.params.id,
-      });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).render('server_error', {
-      layout: 'main',
-    });
-  }
-});
-
-router.get('/ssr/main/:id/delete', (req, res) => {
-  try {
-    const fetchedTeam = getTeamByTla(req.params.id);
-    if (fetchedTeam) {
-      res.render('team_delete', {
-        layout: 'main',
-        team: fetchedTeam,
-      });
-    } else {
-      res.status(404).render('404', {
-        layout: 'main',
-        param: req.params.id,
       });
     }
-  } catch (error) {
-    console.error(error);
-    res.status(500).render('server_error', {
-      layout: 'main',
-    });
-  }
-});
+  });
+}
+const emptyTeam = {
+  name: '',
+  tla: '',
+  area: { name: '' },
+  website: '',
+  email: '',
+};
 
-router.get('/ssr/new', (req, res) => {
-  try {
-    const emptyTeam = {
-      name: '',
-      tla: '',
-      area: { name: '' },
-      website: '',
-      email: '',
-    };
-    res.render('team_edit', {
-      layout: 'main',
-      team: emptyTeam,
-    });
-  } catch (error) {
-    res.status(500).render('server_error', {
-      layout: 'main',
-    });
-  }
-});
+router.get('/ssr/main', renderList);
+router.get('/ssr/main/:id', renderTeamInView('team_show'));
+router.get('/ssr/main/:id/edit', renderTeamInView('team_edit'));
+router.get('/ssr/main/:id/delete', renderTeamInView('team_delete'));
+router.get('/ssr/new', renderTeamInView('team_edit', emptyTeam));
 
-router.post('/ssr/main/:id/edit', (req, res) => {
+router.post('/ssr/main/:id/edit', loadForm, handleForm);
+
+/*
+router.post('/ssr/main/:id/edit', loadForm(), (req, res) => {
   const { pass, response } = validateForm({ ...req.body });
-  console.log('req.body', req);
-  console.log('pass', res);
-  console.log('response', response);
   try {
     if (pass) {
       editTeam({ ...response, originalTla: req.params.id });
@@ -130,6 +116,7 @@ router.post('/ssr/main/:id/edit', (req, res) => {
     });
   }
 });
+*/
 
 router.post(
   '/ssr/new',
