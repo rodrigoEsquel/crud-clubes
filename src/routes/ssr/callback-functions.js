@@ -3,7 +3,7 @@ import {
   teams, getTeamByTla, createTeam, editTeam, deleteTeam, saveImage, loadForm,
 } from '../../database.js';
 
-export const renderList = (req, res) => {
+export const renderList = (_req, res) => {
   try {
     res.render('list', {
       layout: 'main',
