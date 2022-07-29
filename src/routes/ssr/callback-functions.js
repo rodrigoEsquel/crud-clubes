@@ -3,18 +3,20 @@ import {
   teams, getTeamByTla, createTeam, editTeam, deleteTeam, saveImage, loadForm,
 } from '../../database.js';
 
-export const renderList = (_req, res) => {
-  try {
-    res.render('list', {
-      layout: 'main',
-      teams,
-    });
-  } catch (error) {
-    res.status(500).render('server_error', {
-      layout: 'main',
-    });
-  }
-};
+export function renderList() {
+  return ((_req, res) => {
+    try {
+      res.render('list', {
+        layout: 'main',
+        teams,
+      });
+    } catch (error) {
+      res.status(500).render('server_error', {
+        layout: 'main',
+      });
+    }
+  });
+}
 
 export function handleForm() {
   return ((req, res) => {

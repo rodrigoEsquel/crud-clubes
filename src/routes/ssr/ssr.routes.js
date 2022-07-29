@@ -10,7 +10,7 @@ import {
 
 const router = Router();
 
-router.get('/ssr/main', renderList);
+router.get('/ssr/main', renderList());
 router.get('/ssr/main/:id', renderTeamInView('team_show'));
 router.get('/ssr/main/:id/edit', renderTeamInView('team_edit'));
 router.get('/ssr/main/:id/delete', renderTeamInView('team_delete'));
