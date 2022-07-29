@@ -16,38 +16,30 @@ export const renderList = (req, res) => {
   }
 };
 
-export const handleForm = (req, res, next) => {
-  try {
-    const { pass } = validateForm({ ...req.body });
-    if (pass) {
-      try {
+export function handleForm(view) {
+  return ((req, res) => {
+    try {
+      const { pass, response } = validateForm({ ...req.body });
+      if (pass) {
+        editTeam(response);
         res.render('resultado_form', {
           layout: 'main',
           mensaje: 'Éxito!',
         });
-      } catch (error) {
-        res.status(500).render('server_error', {
+      } else {
+        res.render(view, {
           layout: 'main',
+          team: response,
         });
       }
-    } else {
-      try {
-        res.render('resultado_form', {
-          layout: 'main',
-          mensaje: 'Éxito!',
-        });
-      } catch (error) {
-        res.status(500).render('server_error', {
-          layout: 'main',
-        });
-      }
+    } catch (error) {
+      console.log(error.mensaje);
+      res.status(500).render('server_error', {
+        layout: 'main',
+      });
     }
-  } catch (error) {
-    res.status(500).render('server_error', {
-      layout: 'main',
-    });
-  }
-};
+  });
+}
 
 export function renderTeamInView(view, team = 'default') {
   return ((req, res) => {
