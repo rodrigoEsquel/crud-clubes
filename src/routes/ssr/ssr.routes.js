@@ -1,9 +1,9 @@
 /* eslint-disable import/extensions */
 import { Router } from 'express';
-import validateForm from '../validateForm.js';
+import validateForm from '../../validateForm.js';
 import {
   teams, getTeamByTla, createTeam, editTeam, deleteTeam, saveImage, loadForm,
-} from '../database.js';
+} from '../../database.js';
 
 const router = Router();
 
@@ -90,7 +90,6 @@ router.get('/ssr/main/:id', renderTeamInView('team_show'));
 router.get('/ssr/main/:id/edit', renderTeamInView('team_edit'));
 router.get('/ssr/main/:id/delete', renderTeamInView('team_delete'));
 router.get('/ssr/new', renderTeamInView('team_edit', emptyTeam));
-
 router.post('/ssr/main/:id/edit', loadForm, handleForm);
 
 /*
