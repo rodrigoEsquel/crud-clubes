@@ -15,7 +15,7 @@ router.get('/ssr/main/:id', renderTeamInView('team_show'));
 router.get('/ssr/main/:id/edit', renderTeamInView('team_edit'));
 router.get('/ssr/main/:id/delete', renderTeamInView('team_delete'));
 router.get('/ssr/new', renderTeamInView('team_edit', emptyTeam));
-router.post('/ssr/main/:id/edit', loadForm, handleForm('team_edit'));
+router.post('/ssr/main/:id/edit', loadForm, handleForm());
 
 /*
 router.post('/ssr/main/:id/edit', loadForm(), (req, res) => {

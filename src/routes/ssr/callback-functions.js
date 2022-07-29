@@ -16,7 +16,7 @@ export const renderList = (_req, res) => {
   }
 };
 
-export function handleForm(view) {
+export function handleForm() {
   return ((req, res) => {
     try {
       const { pass, response } = validateForm({ ...req.body });
@@ -27,7 +27,7 @@ export function handleForm(view) {
           mensaje: 'Éxito!',
         });
       } else {
-        res.render(view, {
+        res.render('team_edit', {
           layout: 'main',
           team: response,
         });
