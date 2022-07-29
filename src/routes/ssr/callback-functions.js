@@ -18,8 +18,33 @@ export function renderList() {
   });
 }
 
-export function handleForm() {
+export function handleEditForm() {
   return ((req, res) => {
+    try {
+      const { pass, response } = validateForm({ ...req.body, task: 'edit' });
+      if (pass) {
+        editTeam(response);
+        res.render('resultado_form', {
+          layout: 'main',
+          mensaje: 'Éxito!',
+        });
+      } else {
+        res.render('team_edit', {
+          layout: 'main',
+          team: response,
+        });
+      }
+    } catch (error) {
+      console.log(error.mensaje);
+      res.status(500).render('server_error', {
+        layout: 'main',
+      });
+    }
+  });
+}
+
+export function handleNewForm() {
+  return ((req, res, next) => {
     try {
       const { pass, response } = validateForm({ ...req.body });
       if (pass) {
@@ -28,6 +53,7 @@ export function handleForm() {
           layout: 'main',
           mensaje: 'Éxito!',
         });
+        next();
       } else {
         res.render('team_edit', {
           layout: 'main',

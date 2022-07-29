@@ -5,7 +5,7 @@ import {
   teams, getTeamByTla, createTeam, editTeam, deleteTeam, saveImage, loadForm,
 } from '../../database.js';
 import {
-  renderList, renderTeamInView, emptyTeam, handleForm,
+  renderList, renderTeamInView, emptyTeam, handleEditForm, handleNewForm,
 } from './callback-functions.js';
 
 const router = Router();
@@ -15,7 +15,8 @@ router.get('/ssr/main/:id', renderTeamInView('team_show'));
 router.get('/ssr/main/:id/edit', renderTeamInView('team_edit'));
 router.get('/ssr/main/:id/delete', renderTeamInView('team_delete'));
 router.get('/ssr/new', renderTeamInView('team_edit', emptyTeam));
-router.post('/ssr/main/:id/edit', loadForm, handleForm());
+router.post('/ssr/main/:id/edit', loadForm, handleEditForm());
+router.post('/ssr/new', loadForm, handleNewForm(), saveImage('uploaded_file'));
 
 /*
 router.post('/ssr/main/:id/edit', loadForm(), (req, res) => {
