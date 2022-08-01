@@ -2,7 +2,6 @@
 import express from 'express';
 import { create } from 'express-handlebars';
 import morgan from 'morgan';
-// eslint-disable-next-line import/extensions
 import ssrRoutes from './routes/ssr/ssr.routes.js';
 
 const app = express();

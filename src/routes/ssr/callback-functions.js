@@ -1,53 +1,81 @@
 import validateForm from '../../validateForm.js';
 import {
-  teams, getTeamByTla, createTeam, editTeam, deleteTeam, saveImage, loadForm,
+  teams, getTeamByTla, createTeam, writeTeam, deleteTeam, saveImage, loadForm,
 } from '../../database.js';
 
-export const renderList = (req, res) => {
-  try {
-    res.render('list', {
-      layout: 'main',
-      teams,
-    });
-  } catch (error) {
-    res.status(500).render('server_error', {
-      layout: 'main',
-    });
-  }
-};
-
-export const handleForm = (req, res, next) => {
-  try {
-    const { pass } = validateForm({ ...req.body });
-    if (pass) {
-      try {
-        res.render('resultado_form', {
-          layout: 'main',
-          mensaje: 'Éxito!',
-        });
-      } catch (error) {
-        res.status(500).render('server_error', {
-          layout: 'main',
-        });
-      }
-    } else {
-      try {
-        res.render('resultado_form', {
-          layout: 'main',
-          mensaje: 'Éxito!',
-        });
-      } catch (error) {
-        res.status(500).render('server_error', {
-          layout: 'main',
-        });
-      }
+export function renderList() {
+  return ((_req, res) => {
+    try {
+      res.render('list', {
+        layout: 'main',
+        teams,
+      });
+    } catch (error) {
+      res.status(500).render('server_error', {
+        layout: 'main',
+      });
     }
-  } catch (error) {
-    res.status(500).render('server_error', {
-      layout: 'main',
-    });
-  }
-};
+  });
+}
+
+export function renderOkTask() {
+  return ((_req, res) => {
+    try {
+      res.render('resultado_form', {
+        layout: 'main',
+        mensaje: 'Éxito!',
+      });
+    } catch (error) {
+      res.status(500).render('server_error', {
+        layout: 'main',
+      });
+    }
+  });
+}
+
+export function handleEditForm() {
+  return ((req, res, next) => {
+    try {
+      const { pass, response } = validateForm({ ...req.body, task: 'edit' });
+      if (pass) {
+        writeTeam(response);
+        next();
+      } else {
+        res.render('team_edit', {
+          layout: 'main',
+          team: response,
+        });
+      }
+    } catch (error) {
+      console.log(error.mensaje);
+      res.status(500).render('server_error', {
+        layout: 'main',
+      });
+    }
+  });
+}
+
+export function handleNewForm() {
+  return ((req, res, next) => {
+    try {
+      const { pass, response } = validateForm({ ...req.body });
+      if (pass) {
+        writeTeam(response);
+        next();
+      } else {
+        res.render('team_edit', {
+          layout: 'main',
+          team: response,
+        });
+      }
+    } catch (error) {
+      console.log(error.mensaje);
+      res.status(500).render('server_error', {
+        layout: 'main',
+      });
+    }
+  });
+}
 
 export function renderTeamInView(view, team = 'default') {
   return ((req, res) => {
