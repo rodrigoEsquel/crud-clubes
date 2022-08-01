@@ -1,6 +1,6 @@
 /* eslint-disable import/extensions */
 import { Router } from 'express';
-import CB from './callback-functions.js';
+import CB from '../../callback-functions.js';
 
 const router = Router();
 
