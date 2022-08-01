@@ -109,3 +109,17 @@ export const emptyTeam = {
   website: '',
   email: '',
 };
+
+export function removeTeam() {
+  return ((req, res, next) => {
+    try {
+      deleteTeam(req.params.id);
+      next();
+    } catch (error) {
+      console.error(error);
+      res.status(500).render('server_error', {
+        layout: 'main',
+      });
+    }
+  });
+}
