@@ -1,5 +1,5 @@
-import validateForm from '../../validateForm.js';
-import DB from '../../database.js';
+import validateForm from './validateForm.js';
+import DB from './database.js';
 
 const {
   getTeams, getTeamByTla, writeTeam, deleteTeam, loadForm, saveImage,
