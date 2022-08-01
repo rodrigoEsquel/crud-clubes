@@ -1,14 +1,16 @@
 import validateForm from '../../validateForm.js';
-import {
-  teams, getTeamByTla, createTeam, writeTeam, deleteTeam, saveImage, loadForm,
-} from '../../database.js';
+import DB from '../../database.js';
+
+const {
+  getTeams, getTeamByTla, writeTeam, deleteTeam, saveImage, loadForm,
+} = DB;
 
 export function renderList() {
   return ((_req, res) => {
     try {
       res.render('list', {
         layout: 'main',
-        teams,
+        teams: getTeams(),
       });
     } catch (error) {
       res.status(500).render('server_error', {
