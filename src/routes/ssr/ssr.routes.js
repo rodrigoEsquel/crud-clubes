@@ -83,6 +83,8 @@ router.post(
     }
   },
 );
+router.post('/ssr/main/:id/edit', loadForm, handleEditForm(), renderOkTask());
+router.post('/ssr/new', loadForm, handleNewForm(), saveImage('uploaded_file'), renderOkTask());
 
 router.delete('/ssr/main/:id/delete', (req, res) => {
   try {

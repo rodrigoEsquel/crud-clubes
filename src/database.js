@@ -45,7 +45,7 @@ export function createTeam({
   fs.writeFileSync(DATA_BASE, JSON.stringify(teams.push(newTeam)));
 }
 
-export function editTeam({
+export function writeTeam({
   name, email, website, areaName, tla, originalTla,
 }) {
   const index = teams.findIndex((team) => (team.tla === originalTla.toUpperCase()));

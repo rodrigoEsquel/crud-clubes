@@ -1,6 +1,6 @@
 import validateForm from '../../validateForm.js';
 import {
-  teams, getTeamByTla, createTeam, editTeam, deleteTeam, saveImage, loadForm,
+  teams, getTeamByTla, createTeam, writeTeam, deleteTeam, saveImage, loadForm,
 } from '../../database.js';
 
 export function renderList() {
@@ -23,11 +23,8 @@ export function handleEditForm() {
     try {
       const { pass, response } = validateForm({ ...req.body, task: 'edit' });
       if (pass) {
-        editTeam(response);
-        res.render('resultado_form', {
-          layout: 'main',
-          mensaje: 'Éxito!',
-        });
+        writeTeam(response);
+        next();
       } else {
         res.render('team_edit', {
           layout: 'main',
@@ -48,11 +45,7 @@ export function handleNewForm() {
     try {
       const { pass, response } = validateForm({ ...req.body });
       if (pass) {
-        editTeam(response);
-        res.render('resultado_form', {
-          layout: 'main',
-          mensaje: 'Éxito!',
-        });
+        writeTeam(response);
         next();
       } else {
         res.render('team_edit', {
