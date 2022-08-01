@@ -18,8 +18,23 @@ export function renderList() {
   });
 }
 
+export function renderOkTask() {
+  return ((_req, res) => {
+    try {
+      res.render('resultado_form', {
+        layout: 'main',
+        mensaje: 'Éxito!',
+      });
+    } catch (error) {
+      res.status(500).render('server_error', {
+        layout: 'main',
+      });
+    }
+  });
+}
+
 export function handleEditForm() {
-  return ((req, res) => {
+  return ((req, res, next) => {
     try {
       const { pass, response } = validateForm({ ...req.body, task: 'edit' });
       if (pass) {
