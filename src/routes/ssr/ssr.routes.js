@@ -5,7 +5,7 @@ import {
   teams, getTeamByTla, createTeam, editTeam, deleteTeam, saveImage, loadForm,
 } from '../../database.js';
 import {
-  renderList, renderTeamInView, renderOkTask, emptyTeam, handleEditForm, handleNewForm,
+  renderList, renderTeamInView, renderOkTask, emptyTeam, handleEditForm, handleNewForm, removeTeam,
 } from './callback-functions.js';
 
 const router = Router();
@@ -17,20 +17,6 @@ router.get('/ssr/main/:id/delete', renderTeamInView('team_delete'));
 router.get('/ssr/new', renderTeamInView('team_edit', emptyTeam));
 router.post('/ssr/main/:id/edit', loadForm, handleEditForm(), renderOkTask());
 router.post('/ssr/new', loadForm, handleNewForm(), saveImage('uploaded_file'), renderOkTask());
-
-router.delete('/ssr/main/:id/delete', (req, res) => {
-  try {
-    deleteTeam(req.params.id);
-    res.render('resultado_form', {
-      layout: 'main',
-      mensaje: 'Éxito!',
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).render('server_error', {
-      layout: 'main',
-    });
-  }
-});
+router.delete('/ssr/main/:id/delete', removeTeam(), renderOkTask());
 
 export default router;
