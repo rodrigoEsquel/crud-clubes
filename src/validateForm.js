@@ -19,7 +19,7 @@ export default function validateForm({
     email: validarEmail(email).res,
     website: validarWebsite(website).res,
     area: { name: validarAreaName(areaName).res },
-    tla: validarTla(tla, originalTla).res,
+    tla: validarTla(tla, task).res,
   };
   return {
     pass,

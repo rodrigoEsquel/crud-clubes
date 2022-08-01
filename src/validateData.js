@@ -60,7 +60,7 @@ export function validarAreaName(areaName) {
   };
 }
 
-export function validarTla(tla, originalTla) {
+export function validarTla(tla, task) {
   const tlaList = teams.map((elem) => elem.tla);
   const regex = /^[A-Z]{3}$/;
   if (!regex.test(tla)) {
@@ -69,7 +69,7 @@ export function validarTla(tla, originalTla) {
       pass: false,
     };
   }
-  if (tlaList.includes(tla) && (tla !== originalTla)) {
+  if (tlaList.includes(tla) && (task !== 'edit')) {
     return {
       res: 'TLA must be unique',
       pass: false,
