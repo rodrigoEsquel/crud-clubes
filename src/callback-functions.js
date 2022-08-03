@@ -2,7 +2,7 @@ import validateForm from './validateForm.js';
 import db from './database.js';
 
 const {
-  getTeams, getTeamByTla, writeTeam, deleteTeam, loadForm, saveImage,
+  getTeams, getTeamByTla, writeTeam, deleteTeam, loadForm, saveImage, editCrestName,
 } = db;
 
 const emptyTeam = {
@@ -101,6 +101,11 @@ const routesFunctions = {
       try {
         const { pass, response } = validateForm({ ...req.body, task: 'edit' });
         response.crest = req.file;
+        if (response.crest) {
+          const fileName = req.body.tla;
+          const extension = /\.[a-z]*/.exec(req.file.originalname)[0];
+          editCrestName(fileName, extension);
+        }
         if (pass) {
           writeTeam(response);
           next();

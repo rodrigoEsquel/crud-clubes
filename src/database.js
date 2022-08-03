@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
     next(null, './data/escudos');
   },
   filename(req, file, next) {
-    next(null, `_newCrest${/\.[a-z]*/.exec(file.originalname)[0]}`);
+    next(null, '_newCrest');
   },
 });
 
@@ -30,6 +30,8 @@ const Database = {
   saveImage: upload.single('uploaded_file'),
 
   loadForm: upload.none(),
+
+  editCrestName: (name, extention) => fs.renameSync('./data/escudos/_newCrest', `./data/escudos/${name}${extention}`),
 
   getTeams: () => teams,
 
@@ -61,7 +63,6 @@ const Database = {
     };
     if (crest) {
       editedKeys.crestUrl = `/data/escudos/${tla}`;
-      fs.renameSync('/data/escudos/_newCrest.jpg', '/data/escudos/_newCrest.jpg'.replace('_newCrest', tla));
     }
     newTeams[teamIndex] = {
       ...newTeams[teamIndex],
