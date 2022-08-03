@@ -48,9 +48,9 @@ const Database = {
   },
 
   writeTeam({
-    name, email, website, areaName, tla, originalTla,
+    name, email, website, area, tla, crest,
   }) {
-    const index = teams.findIndex((team) => (team.tla === originalTla.toUpperCase()));
+    const teamIndex = teams.findIndex((team) => (team.tla === tla.toUpperCase()));
     const newTeams = [...teams];
     const editedKeys = {
       area,
