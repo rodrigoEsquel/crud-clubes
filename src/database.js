@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
     next(null, './data/escudos');
   },
   filename(req, file, next) {
-    next(null, file.fieldname + req.body.tla);
+    next(null, `_newCrest${/\.[a-z]*/.exec(file.originalname)[0]}`);
   },
 });
 
