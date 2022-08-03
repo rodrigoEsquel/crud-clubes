@@ -27,7 +27,7 @@ function getUniqueId() {
 
 const Database = {
 
-  saveImage(image) { return upload.single(image); },
+  saveImage: upload.single('uploaded_file'),
 
   loadForm: upload.none(),
 
