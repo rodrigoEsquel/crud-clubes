@@ -100,6 +100,7 @@ const routesFunctions = {
     return ((req, res, next) => {
       try {
         const { pass, response } = validateForm({ ...req.body, task: 'edit' });
+        response.crest = req.file;
         if (pass) {
           writeTeam(response);
           next();
