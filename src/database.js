@@ -56,10 +56,13 @@ const Database = {
       area,
       name,
       tla,
-      crestUrl: `/data/escudos${tla}`,
       website,
       email,
     };
+    if (crest) {
+      editedKeys.crestUrl = `/data/escudos/${tla}`;
+      fs.renameSync('/data/escudos/_newCrest.jpg', '/data/escudos/_newCrest.jpg'.replace('_newCrest', tla));
+    }
     newTeams[teamIndex] = {
       ...newTeams[teamIndex],
       ...editedKeys,
