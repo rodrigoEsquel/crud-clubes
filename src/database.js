@@ -52,16 +52,17 @@ const Database = {
   }) {
     const index = teams.findIndex((team) => (team.tla === originalTla.toUpperCase()));
     const newTeams = [...teams];
-    newTeams[index] = {
-      ...newTeams[index],
-      area: {
-        name: areaName,
-      },
+    const editedKeys = {
+      area,
       name,
       tla,
       crestUrl: `/data/escudos${tla}`,
       website,
       email,
+    };
+    newTeams[teamIndex] = {
+      ...newTeams[teamIndex],
+      ...editedKeys,
     };
     fs.writeFileSync(DATA_BASE, JSON.stringify(newTeams));
   },
