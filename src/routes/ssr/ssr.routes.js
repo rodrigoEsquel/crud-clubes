@@ -1,6 +1,6 @@
 /* eslint-disable import/extensions */
 import { Router } from 'express';
-import CB from '../../callback-functions.js';
+import cb from '../../callback-functions.js';
 
 const router = Router();
 
@@ -8,7 +8,7 @@ const {
   renderList, renderTeamInView, renderOkTask,
   handleEditForm, handleNewForm, handleDeleteTeam,
   saveImage, loadForm,
-} = CB;
+} = cb;
 
 router.get('/ssr/main', renderList());
 router.get('/ssr/main/:id', renderTeamInView('team_show'));

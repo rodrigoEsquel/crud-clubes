@@ -1,9 +1,9 @@
 import validateForm from './validateForm.js';
-import DB from './database.js';
+import db from './database.js';
 
 const {
   getTeams, getTeamByTla, writeTeam, deleteTeam, loadForm, saveImage,
-} = DB;
+} = db;
 
 const emptyTeam = {
   name: '',

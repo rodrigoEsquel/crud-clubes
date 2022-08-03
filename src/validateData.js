@@ -1,5 +1,7 @@
 // eslint-disable-next-line import/extensions
-import { teams } from './database.js';
+import db from './database.js';
+
+const teams = db.getTeams();
 
 export function validarName(name) {
   const regexFC = / FC$/;
