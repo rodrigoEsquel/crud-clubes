@@ -101,6 +101,7 @@ const routesFunctions = {
       try {
         const { pass, response } = validateForm({ ...req.body, task: 'edit' });
         response.crest = req.file;
+        response.originalTla = req.params.id;
         if (response.crest) {
           const fileName = req.body.tla;
           const extension = /\.[a-z]*/.exec(req.file.originalname)[0];
