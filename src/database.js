@@ -6,7 +6,7 @@ const teams = JSON.parse(fs.readFileSync(DATA_BASE));
 
 const storage = multer.diskStorage({
   destination(req, file, next) {
-    next(null, './data/escudos');
+    next(null, './public/img');
   },
   filename(req, file, next) {
     next(null, '_newCrest');
@@ -62,7 +62,7 @@ const Database = {
       email,
     };
     if (crest) {
-      editedKeys.crestUrl = `/data/escudos/${tla}`;
+      editedKeys.crestUrl = `../../img/${tla}${/\.[a-z]*/.exec(crest.originalname)[0]}`;
     }
     newTeams[teamIndex] = {
       ...newTeams[teamIndex],
@@ -81,7 +81,7 @@ const Database = {
       },
       name,
       tla,
-      crestUrl: `/data/escudos${tla}`,
+      crestUrl: `img${tla}`,
       website,
       email,
     };
