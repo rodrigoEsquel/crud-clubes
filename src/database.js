@@ -6,10 +6,10 @@ const teams = JSON.parse(fs.readFileSync(DATA_BASE));
 
 const storage = multer.diskStorage({
   destination(req, file, next) {
-    next(null, './data/escudos');
+    next(null, './public/img');
   },
   filename(req, file, next) {
-    next(null, file.fieldname + req.body.tla);
+    next(null, '_newCrest');
   },
 });
 
@@ -27,9 +27,11 @@ function getUniqueId() {
 
 const Database = {
 
-  saveImage(image) { return upload.single(image); },
+  saveImage: upload.single('uploaded_file'),
 
   loadForm: upload.none(),
+
+  editCrestName: (name, extention) => fs.renameSync('./data/escudos/_newCrest', `./data/escudos/${name}${extention}`),
 
   getTeams: () => teams,
 
@@ -48,20 +50,23 @@ const Database = {
   },
 
   writeTeam({
-    name, email, website, areaName, tla, originalTla,
+    name, email, website, area, tla, originalTla, crest,
   }) {
-    const index = teams.findIndex((team) => (team.tla === originalTla.toUpperCase()));
+    const teamIndex = teams.findIndex((team) => (team.tla === originalTla.toUpperCase()));
     const newTeams = [...teams];
-    newTeams[index] = {
-      ...newTeams[index],
-      area: {
-        name: areaName,
-      },
+    const editedKeys = {
+      area,
       name,
       tla,
-      crestUrl: `/data/escudos${tla}`,
       website,
       email,
+    };
+    if (crest) {
+      editedKeys.crestUrl = `../../img/${tla}${/\.[a-z]*/.exec(crest.originalname)[0]}`;
+    }
+    newTeams[teamIndex] = {
+      ...newTeams[teamIndex],
+      ...editedKeys,
     };
     fs.writeFileSync(DATA_BASE, JSON.stringify(newTeams));
   },
@@ -76,7 +81,7 @@ const Database = {
       },
       name,
       tla,
-      crestUrl: `/data/escudos${tla}`,
+      crestUrl: `img${tla}`,
       website,
       email,
     };

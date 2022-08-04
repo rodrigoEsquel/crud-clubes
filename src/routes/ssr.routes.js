@@ -1,6 +1,6 @@
 /* eslint-disable import/extensions */
 import { Router } from 'express';
-import cb from '../../callback-functions.js';
+import cb from '../callback-functions.js';
 
 const router = Router();
 
@@ -15,8 +15,8 @@ router.get('/ssr/main/:id', renderTeamInView('team_show'));
 router.get('/ssr/main/:id/edit', renderTeamInView('team_edit'));
 router.get('/ssr/main/:id/delete', renderTeamInView('team_delete'));
 router.get('/ssr/new', renderTeamInView('team_edit', 'emptyTeam'));
-router.post('/ssr/main/:id/edit', loadForm, handleEditForm(), renderOkTask());
-router.post('/ssr/new', loadForm, handleNewForm(), saveImage('uploaded_file'), renderOkTask());
+router.post('/ssr/main/:id/edit', saveImage, handleEditForm(), renderOkTask());
+router.post('/ssr/new', loadForm, handleNewForm(), saveImage, renderOkTask());
 router.delete('/ssr/main/:id/delete', handleDeleteTeam(), renderOkTask());
 
 export default router;
