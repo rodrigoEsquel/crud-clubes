@@ -29,9 +29,15 @@ const Database = {
 
   saveImage: upload.single('uploaded_file'),
 
-  loadForm: upload.none(),
 
   editCrestName: (name, extention) => fs.renameSync('./data/escudos/_newCrest', `./data/escudos/${name}${extention}`),
+  deleteCrest: (name, extention) => fs.unlink(`./public/img/${name}${extention}`, (err) => {
+    if (err) {
+      console.log(`failed to delete local image:${err}`);
+    } else {
+      console.log('successfully deleted local image');
+    }
+  }),
 
   getTeams: () => teams,
 
@@ -72,20 +78,18 @@ const Database = {
   },
 
   createTeam({
-    name, email, website, areaName, tla,
+    name, email, website, area, tla, crest,
   }) {
     const newTeam = {
       id: getUniqueId,
-      area: {
-        name: areaName,
-      },
+      area,
       name,
       tla,
-      crestUrl: `img${tla}`,
       website,
       email,
+      crestUrl: `../../img/${tla}${/\.[a-z]*/.exec(crest.originalname)[0]}`,
     };
-    fs.writeFileSync(DATA_BASE, JSON.stringify(teams.push(newTeam)));
+    fs.writeFileSync(DATA_BASE, JSON.stringify([...teams, newTeam]));
   },
 };
 

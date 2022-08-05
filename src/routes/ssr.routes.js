@@ -7,7 +7,7 @@ const router = Router();
 const {
   renderList, renderTeamInView, renderOkTask,
   handleEditForm, handleNewForm, handleDeleteTeam,
-  saveImage, loadForm,
+  saveImage,
 } = cb;
 
 router.get('/ssr/main', renderList());
