@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/extensions
-import db from './database.js';
+import db from '../database/database.js';
 
 const teams = db.getTeams();
 

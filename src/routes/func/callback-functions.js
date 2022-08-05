@@ -1,9 +1,9 @@
-import validateForm from './validateForm.js';
-import db from './database.js';
+import validateForm from '../../validation/validateForm.js';
+import db from '../../database/database.js';
 
 const {
   getTeams, getTeamByTla,
-  writeTeam, createTeam, deleteTeam,
+  editTeam, createTeam, deleteTeam,
   saveImage, editCrestName, deleteCrest,
 } = db;
 
@@ -84,7 +84,6 @@ const routesFunctions = {
         if (response.crest) {
           editCrestName(fileName, extension);
         }
-        console.log(response, pass);
         if (pass) {
           createTeam(response);
           next();
@@ -116,7 +115,7 @@ const routesFunctions = {
           editCrestName(fileName, extension);
         }
         if (pass) {
-          writeTeam(response);
+          editTeam(response);
           next();
         } else {
           res.render('team_edit', {
