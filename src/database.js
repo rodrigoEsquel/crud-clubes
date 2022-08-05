@@ -29,8 +29,8 @@ const Database = {
 
   saveImage: upload.single('uploaded_file'),
 
+  editCrestName: (name, extention) => fs.renameSync('./public/img/_newCrest', `./public/img/${name}${extention}`),
 
-  editCrestName: (name, extention) => fs.renameSync('./data/escudos/_newCrest', `./data/escudos/${name}${extention}`),
   deleteCrest: (name, extention) => fs.unlink(`./public/img/${name}${extention}`, (err) => {
     if (err) {
       console.log(`failed to delete local image:${err}`);
