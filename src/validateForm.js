@@ -5,7 +5,6 @@ import {
 
 export default function validateForm({
   name, email, website, areaName, tla, task = 'new',
-  // TODO unique ID para verificar edicion o nuevo equipo
 }) {
   const pass = !!((
     validarName(name).pass
