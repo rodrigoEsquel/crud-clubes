@@ -1,3 +1,4 @@
+import db from '../../database/database.js';
 
 const {
   getTeams, getTeamByTla,

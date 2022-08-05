@@ -31,13 +31,7 @@ const Database = {
 
   editCrestName: (name, extention) => fs.renameSync('./public/img/_newCrest', `./public/img/${name}${extention}`),
 
-  deleteCrest: (name, extention) => fs.unlink(`./public/img/${name}${extention}`, (err) => {
-    if (err) {
-      console.log(`failed to delete local image:${err}`);
-    } else {
-      console.log('successfully deleted local image');
-    }
-  }),
+  deleteCrest: (name, extention) => fs.unlink(`./public/img/${name}${extention}`),
 
   getTeams: () => teams,
 
@@ -55,7 +49,7 @@ const Database = {
     fs.writeFileSync(DATA_BASE, JSON.stringify(newTeams));
   },
 
-  writeTeam({
+  editTeam({
     name, email, website, area, tla, originalTla, crest,
   }) {
     const teamIndex = teams.findIndex((team) => (team.tla === originalTla.toUpperCase()));
