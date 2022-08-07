@@ -48,6 +48,14 @@ const Database = {
   deleteTeam(tla) {
     const newTeams = teams.filter((team) => (team.tla !== tla));
     fs.writeFileSync(dataBase, JSON.stringify(newTeams));
+
+    const dirCont = fs.readdirSync(imgFolder);
+    const teamCrestRegex = new RegExp(`${tla}.[a-b]*`, 'i');
+    const teamCrestFile = dirCont.filter((elm) => elm.match(teamCrestRegex)).pop();
+    console.log(teamCrestFile);
+    if (teamCrestFile) {
+      fs.unlinkSync(imgFolder + teamCrestFile);
+    }
   },
 
   editTeam({
