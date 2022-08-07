@@ -70,7 +70,7 @@ const Database = {
       email,
     };
     if (crest) {
-      editedKeys.crestUrl = `../../img/${tla}${/\.[a-z]*/.exec(crest.originalname)[0]}`;
+      editedKeys.crestUrl = `/img/${tla}${/\.[a-z]*/.exec(crest.originalname)[0]}`;
     }
     newTeams[teamIndex] = {
       ...newTeams[teamIndex],
