@@ -1,8 +1,8 @@
 import fs from 'fs';
 import multer from 'multer';
 
-const DATA_BASE = './data/equipos.db.json';
-const teams = JSON.parse(fs.readFileSync(DATA_BASE));
+const dataBase = './data/equipos.db.json';
+const teams = JSON.parse(fs.readFileSync(dataBase));
 
 const storage = multer.diskStorage({
   destination(req, file, next) {
@@ -46,7 +46,7 @@ const Database = {
 
   deleteTeam(tla) {
     const newTeams = teams.filter((team) => (team.tla !== tla));
-    fs.writeFileSync(DATA_BASE, JSON.stringify(newTeams));
+    fs.writeFileSync(dataBase, JSON.stringify(newTeams));
   },
 
   editTeam({
@@ -68,7 +68,7 @@ const Database = {
       ...newTeams[teamIndex],
       ...editedKeys,
     };
-    fs.writeFileSync(DATA_BASE, JSON.stringify(newTeams));
+    fs.writeFileSync(dataBase, JSON.stringify(newTeams));
   },
 
   createTeam({
@@ -83,7 +83,7 @@ const Database = {
       email,
       crestUrl: `../../img/${tla}${/\.[a-z]*/.exec(crest.originalname)[0]}`,
     };
-    fs.writeFileSync(DATA_BASE, JSON.stringify([...teams, newTeam]));
+    fs.writeFileSync(dataBase, JSON.stringify([...teams, newTeam]));
   },
 };
 
