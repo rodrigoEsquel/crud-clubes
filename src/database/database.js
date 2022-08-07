@@ -3,10 +3,11 @@ import multer from 'multer';
 
 const dataBase = './data/equipos.db.json';
 const teams = JSON.parse(fs.readFileSync(dataBase));
+const imgFolder = './public/img/';
 
 const storage = multer.diskStorage({
   destination(req, file, next) {
-    next(null, './public/img');
+    next(null, imgFolder);
   },
   filename(req, file, next) {
     next(null, '_newCrest');
@@ -29,9 +30,9 @@ const Database = {
 
   saveImage: upload.single('uploaded_file'),
 
-  editCrestName: (name, extention) => fs.renameSync('./public/img/_newCrest', `./public/img/${name}${extention}`),
+  editCrestName: (name, extention) => fs.renameSync(`${imgFolder}_newCrest`, `${imgFolder}${name}${extention}`),
 
-  deleteCrest: (name, extention) => fs.unlink(`./public/img/${name}${extention}`),
+  deleteCrest: (name, extention) => fs.unlink(`${imgFolder}${name}${extention}`),
 
   getTeams: () => teams,
 
