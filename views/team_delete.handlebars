@@ -18,7 +18,6 @@
   </div>
   <script>
     function fetchDelete() {
-      console.log("{{team.tla}}")
       fetch(`/ssr/main/{{team.tla}}/delete`, {method: 'DELETE'})
     }
 </script>

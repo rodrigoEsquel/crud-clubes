@@ -1,12 +1,13 @@
 import fs from 'fs';
 import multer from 'multer';
 
-const DATA_BASE = './data/equipos.db.json';
-const teams = JSON.parse(fs.readFileSync(DATA_BASE));
+const dataBase = './data/equipos.db.json';
+const teams = JSON.parse(fs.readFileSync(dataBase));
+const imgFolder = './public/img/';
 
 const storage = multer.diskStorage({
   destination(req, file, next) {
-    next(null, './public/img');
+    next(null, imgFolder);
   },
   filename(req, file, next) {
     next(null, '_newCrest');
@@ -29,9 +30,9 @@ const Database = {
 
   saveImage: upload.single('uploaded_file'),
 
-  editCrestName: (name, extention) => fs.renameSync('./public/img/_newCrest', `./public/img/${name}${extention}`),
+  editCrestName: (name, extention) => fs.renameSync(`${imgFolder}_newCrest`, `${imgFolder}${name}${extention}`),
 
-  deleteCrest: (name, extention) => fs.unlink(`./public/img/${name}${extention}`),
+  deleteCrest: (name, extention) => fs.unlink(`${imgFolder}${name}${extention}`),
 
   getTeams: () => teams,
 
@@ -46,7 +47,14 @@ const Database = {
 
   deleteTeam(tla) {
     const newTeams = teams.filter((team) => (team.tla !== tla));
-    fs.writeFileSync(DATA_BASE, JSON.stringify(newTeams));
+    fs.writeFileSync(dataBase, JSON.stringify(newTeams));
+
+    const dirCont = fs.readdirSync(imgFolder);
+    const teamCrestRegex = new RegExp(`${tla}.[a-b]*`, 'i');
+    const teamCrestFile = dirCont.filter((elm) => elm.match(teamCrestRegex)).pop();
+    if (teamCrestFile) {
+      fs.unlinkSync(imgFolder + teamCrestFile);
+    }
   },
 
   editTeam({
@@ -68,7 +76,7 @@ const Database = {
       ...newTeams[teamIndex],
       ...editedKeys,
     };
-    fs.writeFileSync(DATA_BASE, JSON.stringify(newTeams));
+    fs.writeFileSync(dataBase, JSON.stringify(newTeams));
   },
 
   createTeam({
@@ -83,7 +91,7 @@ const Database = {
       email,
       crestUrl: `../../img/${tla}${/\.[a-z]*/.exec(crest.originalname)[0]}`,
     };
-    fs.writeFileSync(DATA_BASE, JSON.stringify([...teams, newTeam]));
+    fs.writeFileSync(dataBase, JSON.stringify([...teams, newTeam]));
   },
 };
 
