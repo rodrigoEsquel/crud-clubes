@@ -52,7 +52,6 @@ const Database = {
     const dirCont = fs.readdirSync(imgFolder);
     const teamCrestRegex = new RegExp(`${tla}.[a-b]*`, 'i');
     const teamCrestFile = dirCont.filter((elm) => elm.match(teamCrestRegex)).pop();
-    console.log(teamCrestFile);
     if (teamCrestFile) {
       fs.unlinkSync(imgFolder + teamCrestFile);
     }
