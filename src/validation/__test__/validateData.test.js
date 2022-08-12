@@ -52,4 +52,26 @@ describe('Item validation from inputs', () => {
       expect(response.res).toBe('Unvalid Email');
     });
   });
+  describe('Team name validations', () => {
+    test('"Test FC" should pass', () => {
+      const response = validarName('Test FC');
+      expect(response.pass).toStrictEqual(true);
+      expect(response.res).toBe('Test FC');
+    });
+    test('"Test" should not pass', () => {
+      const response = validarName('Test');
+      expect(response.pass).toStrictEqual(false);
+      expect(response.res).toBe('Name should finish with " FC"');
+    });
+    test('"TestFC" should not pass', () => {
+      const response = validarName('TestFC');
+      expect(response.pass).toStrictEqual(false);
+      expect(response.res).toBe('Name should finish with " FC"');
+    });
+    test('"test FC" should not pass', () => {
+      const response = validarName('test FC');
+      expect(response.pass).toStrictEqual(false);
+      expect(response.res).toBe('Name should start with capital letter');
+    });
+  });
 });
