@@ -30,4 +30,26 @@ describe('Item validation from inputs', () => {
       expect(response.res).toBe('Area name should be England');
     });
   });
+  describe('Email validations', () => {
+    test('test@test.com should pass', () => {
+      const response = validarEmail('test@test.com');
+      expect(response.pass).toStrictEqual(true);
+      expect(response.res).toBe('test@test.com');
+    });
+    test('Missing domain should not pass', () => {
+      const response = validarEmail('test@.com');
+      expect(response.pass).toStrictEqual(false);
+      expect(response.res).toBe('Unvalid Email');
+    });
+    test('Missing top-level domain should not pass', () => {
+      const response = validarEmail('test@test');
+      expect(response.pass).toStrictEqual(false);
+      expect(response.res).toBe('Unvalid Email');
+    });
+    test('Missing user should not pass', () => {
+      const response = validarEmail('@test.com');
+      expect(response.pass).toStrictEqual(false);
+      expect(response.res).toBe('Unvalid Email');
+    });
+  });
 });
