@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "jest",
-    "jest": "jest --watchAll",
+    "jest": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll",
     "dev": "nodemon src"
   },
   "repository": {
