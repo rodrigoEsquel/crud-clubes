@@ -1,6 +1,7 @@
 /// <reference types="jest" />
 
 import { jest } from '@jest/globals';
+import db from '../../database/database.js';
 import {
   validarAreaName, validarEmail, validarName, validarTla, validarWebsite,
 } from '../validateData.js';
@@ -72,6 +73,31 @@ describe('Item validation from inputs', () => {
       const response = validarName('test FC');
       expect(response.pass).toStrictEqual(false);
       expect(response.res).toBe('Name should start with capital letter');
+    });
+  });
+  describe('Team TLA test', () => {
+    test('"AAA" should pass', () => {
+      jest.mock('db');
+      const resp = [{ name: 'team1', tla: 'AAB' }, { name: 'team2', tla: 'AAC' }];
+      db.getTeams.mockResolvedValue(resp);
+
+      const response = validarTla('AAA');
+
+      expect(response.pass).toStrictEqual(true);
+      expect(response.res).toBe('AAA');
+    });
+    test('"ARS" should not pass', () => {
+      const response = validarTla('ARS');
+      expect(response.pass).toStrictEqual(false);
+      expect(response.res).toBe('TLA must be unique');
+    });
+    test('"AAB" should not pass', () => {
+      db.getTeams = jest.fn(() => (
+        () => [{ name: 'team1', tla: 'AAB' }, { name: 'team2', tla: 'AAC' }]
+      ));
+      const response = validarTla('AAB');
+      expect(response.pass).toStrictEqual(false);
+      expect(response.res).toBe('TLA must be unique');
     });
   });
 });
