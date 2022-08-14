@@ -16,6 +16,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+function getTeams() {
+  return JSON.parse(fs.readFileSync(dataBase));
+}
+
 function getUniqueId() {
   const maxId = 99999;
   const idList = teams.map((elem) => elem.id);
@@ -34,7 +38,7 @@ const Database = {
 
   deleteCrest: (name, extention) => fs.unlink(`${imgFolder}${name}${extention}`),
 
-  getTeams: () => teams,
+  getTeams,
 
   getTeamByTla(tla) {
     const searchedTla = tla.toUpperCase();
