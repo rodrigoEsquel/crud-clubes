@@ -2,7 +2,6 @@ import fs from 'fs';
 import multer from 'multer';
 
 const dataBase = './data/equipos.db.json';
-const teams = JSON.parse(fs.readFileSync(dataBase));
 const imgFolder = './public/img/';
 
 const storage = multer.diskStorage({
@@ -22,6 +21,7 @@ function getTeams() {
 
 function getUniqueId() {
   const maxId = 99999;
+  const teams = getTeams();
   const idList = teams.map((elem) => elem.id);
   const id = Math.floor(Math.random() * (maxId));
   if (idList.includes(id)) {
@@ -42,6 +42,7 @@ const Database = {
 
   getTeamByTla(tla) {
     const searchedTla = tla.toUpperCase();
+    const teams = getTeams();
     const fetchedTeam = teams.filter((team) => (team.tla === searchedTla));
     if (fetchedTeam.length === 1) {
       return fetchedTeam.pop();
@@ -50,6 +51,7 @@ const Database = {
   },
 
   deleteTeam(tla) {
+    const teams = getTeams();
     const newTeams = teams.filter((team) => (team.tla !== tla));
     fs.writeFileSync(dataBase, JSON.stringify(newTeams));
 
@@ -64,6 +66,7 @@ const Database = {
   editTeam({
     name, email, website, area, tla, originalTla, crest,
   }) {
+    const teams = getTeams();
     const teamIndex = teams.findIndex((team) => (team.tla === originalTla.toUpperCase()));
     const newTeams = [...teams];
     const editedKeys = {
@@ -86,6 +89,7 @@ const Database = {
   createTeam({
     name, email, website, area, tla, crest,
   }) {
+    const teams = getTeams();
     const newTeam = {
       id: getUniqueId,
       area,
