@@ -22,6 +22,15 @@ describe('Database functions', () => {
       expect(renameSpy).toHaveBeenCalledWith('./public/img/_newCrest', './public/img/AAA.jpg');
     });
   });
+  describe('Delete crest test', () => {
+    test('Should delete file in public folder with passed parameters', () => {
+      const deleteSpy = jest.spyOn(fs, 'unlink').mockImplementation(() => {});
+
+      db.deleteCrest('AAA', '.jpg');
+
+      expect(deleteSpy).toHaveBeenCalledWith('./public/img/AAA.jpg');
+    });
+  });
     });
   });
 });
