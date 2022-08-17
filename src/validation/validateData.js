@@ -1,8 +1,6 @@
 // eslint-disable-next-line import/extensions
 import db from '../database/database.js';
 
-const teams = db.getTeams();
-
 export function validarName(name) {
   const regexFC = / FC$/;
   if (!regexFC.test(name)) {
@@ -63,7 +61,6 @@ export function validarAreaName(areaName) {
 }
 
 export function validarTla(tla, task) {
-  const tlaList = teams.map((elem) => elem.tla);
   const regex = /^[A-Z]{3}$/;
   if (!regex.test(tla)) {
     return {
@@ -71,6 +68,8 @@ export function validarTla(tla, task) {
       pass: false,
     };
   }
+  const teams = db.getTeams();
+  const tlaList = teams.map((elem) => elem.tla);
   if (tlaList.includes(tla) && (task !== 'edit')) {
     return {
       res: 'TLA must be unique',
