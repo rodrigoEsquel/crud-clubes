@@ -5,4 +5,7 @@ import { jest } from '@jest/globals';
 import validateForm from '../validateForm.js';
 
 describe('Form validation', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
 });
