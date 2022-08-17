@@ -19,5 +19,15 @@ describe('Form validation', () => {
       expect(response.pass).toStrictEqual(true);
       expect(JSON.stringify(response.response)).toEqual('{"name":"Test FC","email":"test@test.com","website":"www.test.com","area":{"name":"England"},"tla":"AAA"}');
     });
+    test('Wrong should fail and trow warning', () => {
+      const teamData = {
+        name: 'Test FC', email: 'test@test.com', website: 'www.test.com', areaName: 'Argentina', tla: 'AAA',
+      };
+
+      const response = validateForm(teamData);
+
+      expect(response.pass).toStrictEqual(false);
+      expect(JSON.stringify(response.response)).toContain('Area name should be England');
+    });
   });
 });
