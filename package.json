@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --watchAll --verbose",
-    "dev": "nodemon src"
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",

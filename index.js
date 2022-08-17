@@ -2,7 +2,7 @@
 import express from 'express';
 import { create } from 'express-handlebars';
 import morgan from 'morgan';
-import ssrRoutes from './routes/ssr.routes.js';
+import ssrRoutes from './src/routes/ssr.routes.js';
 
 const app = express();
 const hbs = create();
