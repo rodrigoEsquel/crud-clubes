@@ -79,28 +79,39 @@ describe('Item validation from inputs', () => {
     });
   });
   describe('Team TLA test', () => {
-    test('"AAA" should pass', () => {
-      jest.mock('db');
-      const resp = [{ name: 'team1', tla: 'AAB' }, { name: 'team2', tla: 'AAC' }];
-      db.getTeams.mockResolvedValue(resp);
+    test('Non-existing TLA should pass', () => {
+      const teamsMock = [{ name: 'team1', tla: 'AAB' }, { name: 'team2', tla: 'AAC' }];
+      const readFileSpy = jest.spyOn(db, 'getTeams').mockImplementation(() => teamsMock);
 
       const response = validarTla('AAA');
 
       expect(response.pass).toStrictEqual(true);
       expect(response.res).toBe('AAA');
     });
-    test('"ARS" should not pass', () => {
-      const response = validarTla('ARS');
+    test('Existing TLA should not pass', () => {
+      const teamsMock = [{ name: 'team1', tla: 'AAB' }, { name: 'team2', tla: 'AAC' }];
+      const readFileSpy = jest.spyOn(db, 'getTeams').mockImplementation(() => teamsMock);
+
+      const response = validarTla('AAB');
+
       expect(response.pass).toStrictEqual(false);
       expect(response.res).toBe('TLA must be unique');
     });
-    test('"AAB" should not pass', () => {
-      db.getTeams = jest.fn(() => (
-        () => [{ name: 'team1', tla: 'AAB' }, { name: 'team2', tla: 'AAC' }]
-      ));
-      const response = validarTla('AAB');
+    test('Real db TLA, but not mocked should pass', () => {
+      const teamsMock = [{ name: 'team1', tla: 'AAB' }, { name: 'team2', tla: 'AAC' }];
+      const readFileSpy = jest.spyOn(db, 'getTeams').mockImplementation(() => teamsMock);
+
+      const response = validarTla('ARS');
+
+      expect(response.pass).toStrictEqual(true);
+      expect(response.res).toBe('ARS');
+    });
+    test('Long TLA should not pass', () => {
+      const response = validarTla('AAAA');
       expect(response.pass).toStrictEqual(false);
-      expect(response.res).toBe('TLA must be unique');
+      expect(response.res).toBe('TLA should be 3 capital letters');
+    });
+  });
     });
   });
 });
