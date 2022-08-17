@@ -8,11 +8,13 @@ describe('Database functions', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
-
-  describe('db.getTeams()', () => {
-    test('Should get teams from database', () => {
+  describe('Get Teams test', () => {
+    test('Function should get teams from database', () => {
+      const readFileSpy = jest.spyOn(fs, 'readFileSync');
       db.getTeams();
-      expect(fs.readFileSync).toHaveBeenCalled();
+      expect(readFileSpy).toHaveBeenCalled();
+    });
+  });
     });
   });
 });
