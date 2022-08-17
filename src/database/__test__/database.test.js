@@ -49,6 +49,30 @@ describe('Database functions', () => {
       expect(JSON.stringify(team)).toMatch('false');
     });
   });
+  describe('Edit team test', () => {
+    test('Should update team with given information', () => {
+      const teamsMock = [{ name: 'team1', tla: 'AAA' }, { name: 'team2', tla: 'AAC' }];
+      const readFileSpy = jest.spyOn(fs, 'readFileSync').mockImplementation(() => JSON.stringify(teamsMock));
+
+      const writeFileSpy = jest.spyOn(fs, 'writeFileSync').mockImplementation(() => {});
+
+      const teamData = {
+        name: 'test name',
+        tla: 'tst',
+        area: 'test area',
+        website: 'www.test.com',
+        email: 'test@test.com',
+        originalTla: 'AAA',
+      };
+
+      db.editTeam(teamData);
+
+      expect(writeFileSpy).toBeCalledWith(
+        './data/equipos.db.json',
+        `[${JSON.stringify({ ...teamData, originalTla: undefined })},{"name":"team2","tla":"AAC"}]`,
+      );
+    });
+  });
     });
   });
 });
