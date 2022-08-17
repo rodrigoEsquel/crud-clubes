@@ -5,8 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "jest --watchAll",
-    "jest": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --watchAll --verbose",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --watchAll --verbose",
     "dev": "nodemon src"
   },
   "repository": {
