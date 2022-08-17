@@ -1,3 +1,4 @@
+/* eslint-disable arrow-body-style */
 /// <reference types="jest" />
 
 import { jest } from '@jest/globals';
@@ -73,6 +74,25 @@ describe('Database functions', () => {
       );
     });
   });
+  describe('Create team test', () => {
+    test('Should create team with given information', () => {
+      const teamsMock = [{ name: 'team1', tla: 'AAA' }, { name: 'team2', tla: 'AAC' }];
+      const readFileSpy = jest.spyOn(fs, 'readFileSync').mockImplementation(() => JSON.stringify(teamsMock));
+
+      const writeFileSpy = jest.spyOn(fs, 'writeFileSync').mockImplementation(() => {});
+
+      const teamData = {
+        name: 'test name',
+        tla: 'tst',
+        area: 'test area',
+        website: 'www.test.com',
+        email: 'test@test.com',
+        crest: { originalname: ['test.jpg'] },
+      };
+
+      db.createTeam(teamData);
+
+      expect(writeFileSpy).toHaveBeenCalled();
     });
   });
 });
