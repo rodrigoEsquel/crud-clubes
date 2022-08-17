@@ -15,6 +15,13 @@ describe('Database functions', () => {
       expect(readFileSpy).toHaveBeenCalled();
     });
   });
+  describe('Edit crest name test', () => {
+    test('Should rename file in public folder with passed parameters', () => {
+      const renameSpy = jest.spyOn(fs, 'renameSync').mockImplementation(() => {});
+      db.editCrestName('AAA', '.jpg');
+      expect(renameSpy).toHaveBeenCalledWith('./public/img/_newCrest', './public/img/AAA.jpg');
+    });
+  });
     });
   });
 });
