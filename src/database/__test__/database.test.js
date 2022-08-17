@@ -31,6 +31,24 @@ describe('Database functions', () => {
       expect(deleteSpy).toHaveBeenCalledWith('./public/img/AAA.jpg');
     });
   });
+  describe('Get team by TLA test', () => {
+    test('Existing tla should get the team', () => {
+      const teamsMock = [{ name: 'team1', tla: 'AAB' }, { name: 'team2', tla: 'AAC' }];
+      const readFileSpy = jest.spyOn(fs, 'readFileSync').mockImplementation(() => JSON.stringify(teamsMock));
+
+      const team = db.getTeamByTla('AAB');
+
+      expect(JSON.stringify(team)).toMatch('team1');
+    });
+    test('Missing tla should return false', () => {
+      const teamsMock = [{ name: 'team1', tla: 'AAB' }, { name: 'team2', tla: 'AAC' }];
+      const readFileSpy = jest.spyOn(fs, 'readFileSync').mockImplementation(() => JSON.stringify(teamsMock));
+
+      const team = db.getTeamByTla('AAA');
+
+      expect(JSON.stringify(team)).toMatch('false');
+    });
+  });
     });
   });
 });
