@@ -7,6 +7,9 @@ import {
 } from '../validateData.js';
 
 describe('Item validation from inputs', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
   describe('Area Name validations', () => {
     test('England should pass', () => {
       const response = validarAreaName('England');
