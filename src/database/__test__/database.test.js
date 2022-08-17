@@ -5,8 +5,8 @@ import fs from 'fs';
 import db from '../database.js';
 
 describe('Database functions', () => {
-  beforeAll(() => {
-    jest.mock('fs');
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   describe('db.getTeams()', () => {
