@@ -112,6 +112,16 @@ describe('Item validation from inputs', () => {
       expect(response.res).toBe('TLA should be 3 capital letters');
     });
   });
+  describe('Team web name test', () => {
+    test('Full address should pass', () => {
+      const response = validarWebsite('www.testwebpage.com');
+      expect(response.pass).toStrictEqual(true);
+      expect(response.res).toBe('www.testwebpage.com');
+    });
+    test('Missing domain should not pass', () => {
+      const response = validarWebsite('http://testwebpage');
+      expect(response.pass).toStrictEqual(false);
+      expect(response.res).toBe('Unvalid website adress');
     });
   });
 });
