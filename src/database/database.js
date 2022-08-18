@@ -87,7 +87,7 @@ const Database = {
   },
 
   createTeam({
-    name, email, website, area, tla, crest,
+    name, email, website, area, tla, crestUrl,
   }) {
     const teams = getTeams();
     const newTeam = {
@@ -97,7 +97,7 @@ const Database = {
       tla,
       website,
       email,
-      crestUrl: `../../img/${tla}${/\.[a-z]*/.exec(crest.originalname)[0]}`,
+      crestUrl,
     };
     fs.writeFileSync(dataBase, JSON.stringify([...teams, newTeam]));
   },

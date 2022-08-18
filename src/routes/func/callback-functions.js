@@ -79,14 +79,15 @@ const routesFunctions = {
     return ((req, res, next) => {
       try {
         const { pass, response } = validateForm({ ...req.body });
-        response.crest = req.file;
         const fileName = req.body.tla;
         const extension = /\.[a-z]*/.exec(req.file.originalname)[0];
-        if (response.crest) {
+        if (req.file) {
+          response.crestUrl = `/img/${fileName}${extension}`;
           editCrestName(fileName, extension);
         }
         if (pass) {
-          createTeam(response);
+          const newTeam = new Team(response);
+          createTeam(newTeam);
           next();
         } else {
           deleteCrest(fileName, extension);
