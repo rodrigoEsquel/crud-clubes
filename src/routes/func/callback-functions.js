@@ -63,7 +63,7 @@ const routesFunctions = {
   renderOkTask() {
     return ((_req, res) => {
       try {
-        res.render('resultado_form', {
+        res.render('result_form', {
           layout: 'main',
           mensaje: 'Éxito!',
         });

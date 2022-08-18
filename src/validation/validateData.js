@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/extensions
 import db from '../database/database.js';
 
-export function validarName(name) {
+export function validateName(name) {
   const regexFC = / FC$/;
   if (!regexFC.test(name)) {
     return {
@@ -22,7 +22,7 @@ export function validarName(name) {
   };
 }
 
-export function validarEmail(email) {
+export function validateEmail(email) {
   if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
     return {
       res: 'Unvalid Email',
@@ -34,7 +34,7 @@ export function validarEmail(email) {
     pass: true,
   };
 }
-export function validarWebsite(website) {
+export function validateWebsite(website) {
   if (!/^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$/.test(website)) {
     return {
       res: 'Unvalid website adress',
@@ -47,7 +47,7 @@ export function validarWebsite(website) {
   };
 }
 
-export function validarAreaName(areaName) {
+export function validateAreaName(areaName) {
   if (areaName !== 'England') {
     return {
       res: 'Area name should be England',
@@ -60,7 +60,7 @@ export function validarAreaName(areaName) {
   };
 }
 
-export function validarTla(tla, task) {
+export function validateTla(tla, task) {
   const regex = /^[A-Z]{3}$/;
   if (!regex.test(tla)) {
     return {
