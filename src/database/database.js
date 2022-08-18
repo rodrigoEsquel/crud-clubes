@@ -64,7 +64,7 @@ const Database = {
   },
 
   editTeam({
-    name, email, website, area, tla, crest,
+    name, email, website, area, tla, crestUrl,
   }, originalTla) {
     const teams = getTeams();
     const teamIndex = teams.findIndex((team) => (team.tla === originalTla.toUpperCase()));
@@ -76,8 +76,8 @@ const Database = {
       website,
       email,
     };
-    if (crest) {
-      editedKeys.crestUrl = `/img/${tla}${/\.[a-z]*/.exec(crest.originalname)[0]}`;
+    if (crestUrl) {
+      editedKeys.crestUrl = crestUrl;
     }
     newTeams[teamIndex] = {
       ...newTeams[teamIndex],
