@@ -45,7 +45,7 @@ describe('Database functions', () => {
       const teamsMock = [{ name: 'team1', tla: 'AAB' }, { name: 'team2', tla: 'AAC' }];
       const readFileSpy = jest.spyOn(fs, 'readFileSync').mockImplementation(() => JSON.stringify(teamsMock));
 
-      const team = db.getTeamByTla('AAA');
+      const team = db.getTeamByTla('AAA', teamsMock);
 
       expect(JSON.stringify(team)).toMatch('false');
     });
@@ -63,10 +63,9 @@ describe('Database functions', () => {
         area: 'test area',
         website: 'www.test.com',
         email: 'test@test.com',
-        originalTla: 'AAA',
       };
 
-      db.editTeam(teamData);
+      db.editTeam(teamData, 'AAA');
 
       expect(writeFileSpy).toBeCalledWith(
         './data/equipos.db.json',
