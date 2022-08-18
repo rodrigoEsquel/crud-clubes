@@ -64,8 +64,8 @@ const Database = {
   },
 
   editTeam({
-    name, email, website, area, tla, originalTla, crest,
-  }) {
+    name, email, website, area, tla, crestUrl,
+  }, originalTla) {
     const teams = getTeams();
     const teamIndex = teams.findIndex((team) => (team.tla === originalTla.toUpperCase()));
     const newTeams = [...teams];
@@ -76,8 +76,8 @@ const Database = {
       website,
       email,
     };
-    if (crest) {
-      editedKeys.crestUrl = `/img/${tla}${/\.[a-z]*/.exec(crest.originalname)[0]}`;
+    if (crestUrl) {
+      editedKeys.crestUrl = crestUrl;
     }
     newTeams[teamIndex] = {
       ...newTeams[teamIndex],
@@ -87,7 +87,7 @@ const Database = {
   },
 
   createTeam({
-    name, email, website, area, tla, crest,
+    name, email, website, area, tla, crestUrl,
   }) {
     const teams = getTeams();
     const newTeam = {
@@ -97,7 +97,7 @@ const Database = {
       tla,
       website,
       email,
-      crestUrl: `../../img/${tla}${/\.[a-z]*/.exec(crest.originalname)[0]}`,
+      crestUrl,
     };
     fs.writeFileSync(dataBase, JSON.stringify([...teams, newTeam]));
   },

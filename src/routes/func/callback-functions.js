@@ -1,5 +1,6 @@
 import validateForm from '../../validation/validateForm.js';
 import db from '../../database/database.js';
+import Team from '../../classes/team.js';
 
 const {
   getTeams, getTeamByTla,
@@ -7,13 +8,13 @@ const {
   saveImage, editCrestName, deleteCrest,
 } = db;
 
-const emptyTeam = {
+const emptyTeam = new Team({
   name: '',
   tla: '',
-  area: { name: '' },
+  area: '',
   website: '',
   email: '',
-};
+});
 
 const routesFunctions = {
 
@@ -78,14 +79,15 @@ const routesFunctions = {
     return ((req, res, next) => {
       try {
         const { pass, response } = validateForm({ ...req.body });
-        response.crest = req.file;
         const fileName = req.body.tla;
         const extension = /\.[a-z]*/.exec(req.file.originalname)[0];
-        if (response.crest) {
+        if (req.file) {
+          response.crestUrl = `/img/${fileName}${extension}`;
           editCrestName(fileName, extension);
         }
         if (pass) {
-          createTeam(response);
+          const newTeam = new Team(response);
+          createTeam(newTeam);
           next();
         } else {
           deleteCrest(fileName, extension);
@@ -106,16 +108,17 @@ const routesFunctions = {
   handleEditForm() {
     return ((req, res, next) => {
       try {
-        const { pass, response } = validateForm({ ...req.body, task: 'edit' });
-        response.crest = req.file;
-        response.originalTla = req.params.id;
-        if (response.crest) {
+        const { pass, response } = validateForm({ ...req.body }, 'edit');
+        const originalTla = req.params.id;
+        if (req.file) {
           const fileName = req.body.tla;
           const extension = /\.[a-z]*/.exec(req.file.originalname)[0];
+          response.crestUrl = `/img/${fileName}${extension}`;
           editCrestName(fileName, extension);
         }
         if (pass) {
-          editTeam(response);
+          const editedTeam = new Team(response);
+          editTeam(editedTeam, originalTla);
           next();
         } else {
           res.render('team_edit', {
