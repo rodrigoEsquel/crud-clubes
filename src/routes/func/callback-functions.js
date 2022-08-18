@@ -108,7 +108,7 @@ const routesFunctions = {
   handleEditForm() {
     return ((req, res, next) => {
       try {
-        const { pass, response } = validateForm({ ...req.body, task: 'edit' });
+        const { pass, response } = validateForm({ ...req.body }, 'edit');
         const originalTla = req.params.id;
         if (req.file) {
           const fileName = req.body.tla;

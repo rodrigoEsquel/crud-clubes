@@ -4,8 +4,8 @@ import {
 } from './validateData.js';
 
 export default function validateForm({
-  name, email, website, areaName, tla, task = 'new',
-}) {
+  name, email, website, areaName, tla,
+}, task = 'new') {
   const pass = !!((
     validarName(name).pass
     && validarEmail(email).pass
