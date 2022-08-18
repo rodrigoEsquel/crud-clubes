@@ -111,12 +111,14 @@ const routesFunctions = {
         response.crest = req.file;
         response.originalTla = req.params.id;
         if (response.crest) {
+        const originalTla = req.params.id;
           const fileName = req.body.tla;
           const extension = /\.[a-z]*/.exec(req.file.originalname)[0];
           editCrestName(fileName, extension);
         }
         if (pass) {
           editTeam(response);
+          editTeam(response, originalTla);
           next();
         } else {
           res.render('team_edit', {

@@ -64,8 +64,8 @@ const Database = {
   },
 
   editTeam({
-    name, email, website, area, tla, originalTla, crest,
-  }) {
+    name, email, website, area, tla, crest,
+  }, originalTla) {
     const teams = getTeams();
     const teamIndex = teams.findIndex((team) => (team.tla === originalTla.toUpperCase()));
     const newTeams = [...teams];
