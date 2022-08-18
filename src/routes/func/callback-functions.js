@@ -1,5 +1,6 @@
 import validateForm from '../../validation/validateForm.js';
 import db from '../../database/database.js';
+import Team from '../../classes/team.js';
 
 const {
   getTeams, getTeamByTla,
@@ -7,13 +8,13 @@ const {
   saveImage, editCrestName, deleteCrest,
 } = db;
 
-const emptyTeam = {
+const emptyTeam = new Team({
   name: '',
   tla: '',
-  area: { name: '' },
+  area: '',
   website: '',
   email: '',
-};
+});
 
 const routesFunctions = {
 
