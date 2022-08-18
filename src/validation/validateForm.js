@@ -1,5 +1,5 @@
 import {
-  validarName, validarEmail, validarWebsite, validarAreaName, validarTla,
+  validateName, validateEmail, validateWebsite, validateAreaName, validateTla,
 // eslint-disable-next-line import/extensions
 } from './validateData.js';
 
@@ -7,18 +7,18 @@ export default function validateForm({
   name, email, website, areaName, tla,
 }, task = 'new') {
   const pass = !!((
-    validarName(name).pass
-    && validarEmail(email).pass
-    && validarWebsite(website).pass
-    && validarAreaName(areaName).pass
-    && validarTla(tla, task).pass
+    validateName(name).pass
+    && validateEmail(email).pass
+    && validateWebsite(website).pass
+    && validateAreaName(areaName).pass
+    && validateTla(tla, task).pass
   ));
   const response = {
-    name: validarName(name).res,
-    email: validarEmail(email).res,
-    website: validarWebsite(website).res,
-    area: { name: validarAreaName(areaName).res },
-    tla: validarTla(tla, task).res,
+    name: validateName(name).res,
+    email: validateEmail(email).res,
+    website: validateWebsite(website).res,
+    area: { name: validateAreaName(areaName).res },
+    tla: validateTla(tla, task).res,
   };
   return {
     pass,
