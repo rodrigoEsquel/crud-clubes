@@ -39,7 +39,7 @@ const routesFunctions = {
     return ((req, res) => {
       try {
         const fetchedTeam = (team === 'default'
-          ? getTeamByTla(req.params.id)
+          ? getTeamByTla(req.params.id, getTeams())
           : emptyTeam);
         if (fetchedTeam) {
           res.render(view, {

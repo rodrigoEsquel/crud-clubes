@@ -40,9 +40,8 @@ const Database = {
 
   getTeams,
 
-  getTeamByTla(tla) {
+  getTeamByTla(tla, teams) {
     const searchedTla = tla.toUpperCase();
-    const teams = getTeams();
     const fetchedTeam = teams.filter((team) => (team.tla === searchedTla));
     if (fetchedTeam.length === 1) {
       return fetchedTeam.pop();
