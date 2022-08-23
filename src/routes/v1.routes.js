@@ -16,7 +16,6 @@ const {
   validateEditForm,
 } = controller;
 
-router.use(multer().any());
 router.use(json());
 
 router.get('/v1', getAllTeams);
