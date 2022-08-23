@@ -24,13 +24,13 @@ const createTeam = (req, res) => {
 
 const editTeam = (req, res) => {
   const { pass, response } = validateForm({ ...req.body }, 'edit');
-  const originalTla = req.params.id;
   response.crestUrl = services.handleCrest(req.file, req.body.tla, pass);
   if (!pass) {
     return;
   }
   const newTeam = response;
 
+  const originalTla = req.params.teamTla;
   const editedTeam = services.editTeam(newTeam, originalTla);
   res.send({ status: 'OK', data: editedTeam });
 };
