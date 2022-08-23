@@ -1,5 +1,6 @@
 import services from '../services/v1services.js';
 import validateForm from '../validation/validateForm.js';
+import Team from '../classes/team.js';
 
 const getAllTeams = (req, res) => {
   const allTeams = services.getAllTeams();
@@ -17,7 +18,7 @@ const createTeam = (req, res) => {
   if (!pass) {
     return;
   }
-  const newTeam = response;
+  const newTeam = new Team(response);
   const createdTeam = services.createTeam(newTeam);
   res.send({ status: 'OK', data: createdTeam });
 };
@@ -28,8 +29,7 @@ const editTeam = (req, res) => {
   if (!pass) {
     return;
   }
-  const newTeam = response;
-
+  const newTeam = new Team(response);
   const originalTla = req.params.teamTla;
   const editedTeam = services.editTeam(newTeam, originalTla);
   res.send({ status: 'OK', data: editedTeam });
