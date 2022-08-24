@@ -3,9 +3,9 @@ class Team {
     const name = team.area;
     this.area = { name };
     this.name = team.name;
-    this.tla = team.name;
-    this.website = team.name;
-    this.email = team.name;
+    this.tla = team.tla;
+    this.website = team.website;
+    this.email = team.email;
     this.id = team.id;
     this.crestUrl = team.crestUrl;
   }

@@ -30,9 +30,11 @@ function getUniqueId() {
   return id;
 }
 
-const Database = {
+const database = {
 
   saveImage: upload.single('uploaded_file'),
+
+  getBody: upload.none(),
 
   editCrestName: (name, extention) => fs.renameSync(`${imgFolder}_newCrest`, `${imgFolder}${name}${extention}`),
 
@@ -51,7 +53,8 @@ const Database = {
 
   deleteTeam(tla) {
     const teams = getTeams();
-    const newTeams = teams.filter((team) => (team.tla !== tla));
+    const searchedTla = tla.toUpperCase();
+    const newTeams = teams.filter((team) => (team.tla !== searchedTla));
     fs.writeFileSync(dataBase, JSON.stringify(newTeams));
 
     const dirCont = fs.readdirSync(imgFolder);
@@ -99,7 +102,8 @@ const Database = {
       crestUrl,
     };
     fs.writeFileSync(dataBase, JSON.stringify([...teams, newTeam]));
+    return newTeam;
   },
 };
 
-export default Database;
+export default database;
