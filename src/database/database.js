@@ -38,7 +38,7 @@ const database = {
 
   editCrestName: (name, extention) => fs.renameSync(`${imgFolder}_newCrest`, `${imgFolder}${name}${extention}`),
 
-  deleteCrest: (name, extention) => fs.unlink(`${imgFolder}${name}${extention}`),
+  deleteCrest: (name, extention) => fs.unlinkSync(`${imgFolder}${name}${extention}`),
 
   getTeams,
 
