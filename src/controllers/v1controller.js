@@ -27,7 +27,7 @@ const editTeam = (req, res) => {
   const { pass, response } = validateForm({ ...req.body }, 'edit');
   response.crestUrl = services.handleCrest(req.file, req.body.tla, pass);
   if (!pass) {
-    return;
+    res.send({ status: 'ERROR', data: response });
   }
   const newTeam = new Team(response);
   const originalTla = req.params.teamTla;
