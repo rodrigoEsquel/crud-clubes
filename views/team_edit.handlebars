@@ -2,7 +2,8 @@
   <form action="" enctype="multipart/form-data" method="POST"
     style="margin-top: 2em; width: 300px; border-width: 1px; border-color: black; background: darkgrey;">
     <div class="form-group">
-      <input type="file" class="form-control-file" name="uploaded_file" style="height: 200px;">
+      <input id="img" type="file" class="form-control-file" name="uploaded_file">
+      <img id="preview" src="#" alt="preview of loaded image" style="height: 200px;"/>
       <input type="text" class="form-control" placeholder='Team Name' value='{{{team.name}}}' name="name">
       <input type="text" class="form-control" placeholder='AAA' value='{{team.tla}}' name="tla">
       <input type="text" class="form-control" placeholder='England' value='{{team.area.name}}' name="areaName">
@@ -17,3 +18,11 @@
     </div>
   </form>
 </div>
+  <script>
+    document.querySelector('#img').onchange = (event) => {
+  const [file] = document.querySelector('#img').files
+  if (file) {
+    document.querySelector('#preview').src = URL.createObjectURL(file)
+  }
+}
+</script>
