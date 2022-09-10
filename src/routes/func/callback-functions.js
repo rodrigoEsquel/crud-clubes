@@ -1,6 +1,7 @@
 import validateForm from '../../validation/validateForm.js';
 import db from '../../database/database.js';
 import Team from '../../classes/team.js';
+import services from '../../services/v1services.js';
 
 const {
   getTeams, getTeamByTla,
@@ -79,25 +80,18 @@ const routesFunctions = {
     return ((req, res, next) => {
       try {
         const { pass, response } = validateForm({ ...req.body });
-        const fileName = req.body.tla;
-        const extension = /\.[a-z]*/.exec(req.file.originalname)[0];
-        if (req.file) {
-          response.crestUrl = `/img/${fileName}${extension}`;
-          editCrestName(fileName, extension);
-        }
+        response.crestUrl = services.handleCrest(req.file, req.body.tla, pass);
         if (pass) {
           const newTeam = new Team(response);
           createTeam(newTeam);
           next();
         } else {
-          deleteCrest(fileName, extension);
           res.render('team_edit', {
             layout: 'main',
             team: response,
           });
         }
       } catch (error) {
-        console.log(error.mensaje);
         res.status(500).render('server_error', {
           layout: 'main',
         });
@@ -109,15 +103,10 @@ const routesFunctions = {
     return ((req, res, next) => {
       try {
         const { pass, response } = validateForm({ ...req.body }, 'edit');
-        const originalTla = req.params.id;
-        if (req.file) {
-          const fileName = req.body.tla;
-          const extension = /\.[a-z]*/.exec(req.file.originalname)[0];
-          response.crestUrl = `/img/${fileName}${extension}`;
-          editCrestName(fileName, extension);
-        }
+        response.crestUrl = services.handleCrest(req.file, req.body.tla, pass);
         if (pass) {
           const editedTeam = new Team(response);
+          const originalTla = req.params.id;
           editTeam(editedTeam, originalTla);
           next();
         } else {
@@ -127,7 +116,6 @@ const routesFunctions = {
           });
         }
       } catch (error) {
-        console.log(error.mensaje);
         res.status(500).render('server_error', {
           layout: 'main',
         });

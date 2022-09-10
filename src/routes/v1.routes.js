@@ -1,5 +1,5 @@
 import { Router, json } from 'express';
-import multer from 'multer';
+import cors from 'cors';
 import controller from '../controllers/v1controller.js';
 import database from '../database/database.js';
 
@@ -12,11 +12,10 @@ const {
   createTeam,
   editTeam,
   deleteTeam,
-  validateCreateForm,
-  validateEditForm,
 } = controller;
 
 router.use(json());
+router.use(cors());
 
 router.get('/v1', getAllTeams);
 router.post('/v1', saveImage, createTeam);
